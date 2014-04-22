@@ -1,0 +1,416 @@
+#bannerbar
+{
+    /* background-image: url(../images/DBFS-logo-app-icon.png);
+	background-size: 50px 50px;
+	background-position: top left;
+	background-repeat: none; */
+}
+
+
+.ui-content
+{
+    padding: 0 !important;
+}
+
+.ui-listview
+{
+    margin: 0 !important;
+}
+
+#latestUpdates
+{
+    width: 100% !important;
+    position: absolute;
+}
+
+
+
+
+
+*
+{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html
+{
+    -ms-touch-action: none;
+}
+
+body, ul, li
+{
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+body
+{
+    background: #ccc;
+    font-size: x-large;
+    font-family: ubuntu, helvetica, arial;
+    overflow-y: hidden; /* this is important to prevent the whole page to bounce */
+}
+
+#header
+{
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    background: #b73030;
+    padding: 0;
+    color: #eee;
+    font-size: 20px;
+    text-align: left;
+    font-weight: bold;
+}
+
+    #header img
+    {
+        height: 40px;
+        border: none;
+    }
+
+
+    #header a
+    {
+        border: none;
+    }
+
+        #header a img
+        {
+            height: 30px;
+        }
+
+#pageIndicator
+{
+    position: relative;
+    height: 10px;
+    width: 30px;
+    background-color: white;
+    top: -10px;
+}
+
+#footer
+{
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    background: #444;
+    padding: 0;
+    border-top: 1px solid #444;
+    text-align:center;
+}
+
+#horizontalWrapper
+{
+    position: absolute;
+    z-index: 1;
+    top: 45px;
+    bottom: 48px;
+    left: 0;
+    /*height: 100%;*/
+    width: 100%;
+    background: #ccc;
+    /*overflow: hidden;*/
+}
+
+.wrapper
+{
+    /*position: relative;
+	z-index: 1;
+	top: 0px;
+	width: 33.33333%;
+	background: #ccc;
+	overflow: hidden;
+    min-height:100px;
+    float: left;*/
+    /*position: relative;*/
+    z-index: 1;
+    top: 0px;
+    /*bottom: 48px;*/
+    /*left: 0;*/
+    width: 33.33333%;
+    background: #ccc;
+    height: 100%;
+    overflow: hidden;
+    float: left;
+}
+
+#wrapper2
+{
+    /*position: relative;*/
+    z-index: 1;
+    /*visibility:hidden;*/
+    width: 33.333333%;
+    background: #ccc;
+    overflow: hidden;
+    height: 100%;
+    float: left;
+}
+
+.scroller
+{
+    position: absolute;
+    z-index: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    width: 33.33333%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /*-webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;*/
+}
+
+#horizontalScroller
+{
+    position: absolute;
+    z-index: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    width: 300%;
+    height: 100%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /*-webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;*/
+}
+
+.scroller ul
+{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.scroller p
+{
+    font-size: 16px;
+    line-height: 40px;
+}
+
+/*#scroller li {
+	padding: 0 10px;
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #fff;
+	background-color: #fafafa;
+	font-size: 14px;
+}*/
+
+.entry-item
+{
+    text-align: left;
+    width: 100%;
+    background-color: #eee;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /*background-color:#eeebd5;*/
+    /*border:solid 1px black;*/
+    margin-bottom: 15px;
+    margin-top: 15px;
+    min-height: 100px;
+    background-image: url(../images/glyphicons_027_search.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    /*box-shadow: 0px 2px 5px grey;*/
+}
+
+    .entry-item h5, .sermon-item h5, .download-item h5
+    {
+        margin-left: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        /*float: left;*/
+        width: 80%;
+    }
+
+.sermon-links, .download-links
+{
+    position: absolute;
+    border-left: 1px solid black;
+    left: 82%;
+    width: 18%;
+    min-height:100px;
+    /*padding-bottom: 5px;*/
+    top: 0px;
+    bottom: 0px;
+    /*float:right;*/
+}
+
+.playLink, .playDownloadLink
+{
+    position: absolute;
+    top: 0px;
+    /*border-left: 1px solid black;*/
+    font-size: medium;
+    float: right;
+    bottom: 50%;
+    width: 100%;
+    clear: right;
+    background-image: url(../images/glyphicons_173_play.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: darkgrey;
+    border-bottom: 1px solid black;
+}
+
+.downloadLink, .deleteDownloadLink, .downloadedLink
+{
+    position: absolute;
+    top: 50%;
+    /*border-left: 1px solid black;*/
+    font-size: medium;
+    float: right;
+    bottom: 100%;
+    width: 100%;
+    height: 50%;
+    clear: right;
+    background-image: url(../images/glyphicons_212_down_arrow.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: darkgrey;
+}
+
+.deleteDownloadLink
+{
+    background-image: url(../images/glyphicons_016_bin.png);
+}
+
+.downloadedLink
+{
+    background-image: url(../images/glyphicons_206_ok_2.png);
+}
+
+.cancelDownloadLink
+{
+    position: absolute;
+    top: 0%;
+    /*border-left: 1px solid black;*/
+    font-size: medium;
+    float: right;
+    bottom: 100%;
+    width: 100%;
+    height: 100%;
+    clear: right;
+    background-image: url(../images/glyphicons_207_remove_2.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: darkgrey;
+}
+
+.entry-text
+{
+    padding-left:5px;
+    text-align: left;
+    width: 80%;
+    /*background-color: #f7f6e4;*/
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sermon-item, .download-item
+{
+    position: relative;
+    text-align: left;
+    width: 100%;
+    background-color: #eee;
+    /*padding-left: 10px;
+    padding-right: 10px;*/
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /*background-color:#eeebd5;*/
+    /*border:solid 1px black;*/
+    margin-bottom: 15px;
+    margin-top: 15px;
+    min-height:100px;
+    /*transform: translate3d(0,0,0);*/
+    /*height:120px;*/
+    /*border-top: 1px outset #ccc;*/
+    /*border-bottom: 1px outset grey;*/
+    /*box-shadow: 0px 2px 5px grey;*/
+}
+
+.sermon-text, .download-text
+{
+    /*padding: 5px 5px 5px 5px;*/
+    padding-left: 5px;
+    text-align: left;
+    width: 80%;
+    line-height: normal !important;
+    font-size:16px;
+    /*background-color: #f7f6e4;*/
+}
+
+.videoclass
+{
+    display:none;
+}
+
+.newsPage
+{
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0px;
+    bottom: 45px;
+    z-index: 2;
+    padding: 15px 15px 15px 15px;
+    text-align: center;
+    background: #ccc;
+    /*display:none;*/
+}
+
+.newsPage p
+{
+    text-align:left;
+    font-size: 16px;
+    line-height: 30px;
+}
+
+    .newsPage .wrapper
+    {
+        position: relative;
+        width:100%;
+    }
+
+    .newsPage .scroller
+    {
+        width: 100%;
+    }

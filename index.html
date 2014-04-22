@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<head>
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/iscroll.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/backbone-min.js"></script>
+    <script src="js/handlebars-v1.3.0.js"></script>
+
+    <script id="news-template" type="text/x-handlebars-template">
+        <div id="newsWrapper" class="wrapper">
+            <div id="newsScroller" class="scroller">
+                <h5>{{title}}</h5>
+                <p class="news-text">
+                    {{text}}
+                </p>
+            </div>
+        </div>
+    </script>
+
+    <script id="entry-template" type="text/x-handlebars-template">
+        <h5>{{title}}</h5>
+        <p class="entry-text">
+            {{{text}}}
+        </p>
+    </script>
+
+    <script id="sermon-template" type="text/x-handlebars-template">
+        {{title}}<br />
+        {{description}} - {{author}}    
+        <!--<div class="sermon-links">-->
+            <div class="playLink"></div>
+            {{#if downloaded}}
+                <div class="downloadedLink"></div>
+            {{else}}
+                <<div class="downloadLink"></div>
+            {{/if}}
+        <!--</div>-->
+        <!--<div class="bottomDownloadedLink"></div>
+        <div class="bottomPlayLink"></div>-->
+    </script>
+
+    <script id="download-template" type="text/x-handlebars-template">
+        <h5>{{title}}</h5>
+
+        {{#if downloaded}}
+                <div class="download-links">
+                    <div class="playDownloadLink"></div>
+                    <div class="deleteDownloadLink"></div>
+                </div>
+        <p class="sermon-text">
+            {{{description}}}
+        </p>
+        {{else}}
+                <div class="download-links">
+                    <div class="cancelDownloadLink"></div>
+                </div>
+        <div class="sermon-text">
+            {{#if progress}}
+            <div style="position:relative;width:100%;text-align:center;border: 1px solid black;">
+                <div style="position:absolute;top:0px;left:0px;width:{{progress}}%;height:100%;background-color:green;text-align:center;">
+                    &nbsp;
+                </div>
+                <span style="position:relative;z-index:1;">{{progress}}%</span>
+            </div>
+            {{else}}
+            Waiting....
+            {{/if}}
+        </div>
+        {{/if}}
+    </script>
+
+    <script src="js/index.js"></script>
+    <script src="js/news.js"></script>
+    <!-- <script src="js/sermons.js"></script> -->
+    <!-- <script src="js/downloads.js"></script> -->
+
+    <script type="text/javascript">
+        var currentPage = "news";
+
+        function updateFeed() {
+            app.trigger('update');
+        }
+
+        function playVideo() {
+            document.getElementById("videoclass").play();
+        }
+
+    </script>
+    <script src="cordova.js"></script>
+</head>
+
+<body>
+    <div id="header">
+        <img src="images/DBFS-logo-app-icon.png" style="float: left; height: 40px;" />
+        DBF South
+    <div style="position: relative; float: right; padding-top: 5px; padding-right: 10px;">
+        <div id="scrollIndicator" style="width: 100%;">
+            <div id="pageIndicator"></div>
+        </div>
+    </div>
+
+    </div>
+
+    <div id="horizontalWrapper">
+        <div id="horizontalScroller" class="scroller">
+			<!-- News Screen -->
+            <div id="wrapper" class="wrapper">
+                <div id="scroller" class="scroller">
+                    <h3>News</h3>
+                </div>
+            </div>
+
+            <!-- Sermons Screen -->
+            <div id="wrapper2" class="wrapper">
+                <div id="scroller2" class="scroller">
+                    <h3>Sermon</h3>
+                </div>
+            </div>
+
+            <!-- Downloads Screen -->
+            <div id="wrapper3" class="wrapper">
+                <div id="scroller3" class="scroller">
+                    <h3>Downloads</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div id="footer">
+    <img src="images/glyphicons_081_refresh.png" onclick="updateFeed()" />
+    <a href="#" onclick="playVideo()">Test</a>
+    </div>-->
+
+<script type="text/javascript">
+    //$(document).on('tap', function (event) {
+    //    console.log(event.type);
+    //});
+
+    //$(document).on('click', function (event) {
+    //    //console.log(event.type);
+    //});
+    
+	
+	app.initialize();
+    $(document).ready(function () {
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+		
+		//setTimeout(function () {$(document).trigger('deviceready')}, 3000);
+		
+        //var newsView = new NewsCollectionView({displayName: "news"});
+		//var newsView1 = new NewsCollectionView({displayName: "news1"});
+        //var downloadView = new DownloadListView();
+        //var sermonView = new SermonListView();
+    });
+</script>
+
+<!--<script src="http://jsconsole.com/remote.js?D55B5F65-1246-435B-952D-FEF9587DDC8A"></script>-->
+</body>
