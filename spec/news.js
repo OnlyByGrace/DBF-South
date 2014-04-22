@@ -210,10 +210,10 @@ describe("News Section", function () {
 				expect(thisCollection.$el.selector).toBe("#newsScreen");
 			});
 			
-			// it("should render", function () {
-				// expect(thisCollection.$el.html()).toBe("<h6>News</h6>");
-				// expect(thisCollection.$el.hasClass("scroller")).toBe(true);
-			// });
+			it("should render", function () {
+				expect(thisCollection.$el.html()).toBe("<h6>News</h6>");
+				expect(thisCollection.$el.hasClass("scroller")).toBe(true);
+			});
 		});
 		
 		describe("loading", function () {

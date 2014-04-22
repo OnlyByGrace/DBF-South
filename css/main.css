@@ -81,6 +81,7 @@ body
     #header a
     {
         border: none;
+		padding: 2px;
     }
 
         #header a img

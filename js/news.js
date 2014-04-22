@@ -76,7 +76,6 @@ var NewsCollection = Backbone.Collection.extend({
 });
 
 var NewsCollectionView = Backbone.View.extend({
-	//className: 'scroller',
 	initialize: function(opts) {
 		_.bindAll(this,'deviceReady','render');
 		
@@ -86,7 +85,6 @@ var NewsCollectionView = Backbone.View.extend({
 			this.displayName = "news";
 		}
 		this.setElement(app.register(this.displayName,"images/glyphicons_045_calendar.png"));
-		//this.$el.addClass("wrapper");
 		
 		this.collection = new NewsCollection();
 		this.collection.on("add",this.collection.save);
