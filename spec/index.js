@@ -34,10 +34,8 @@ describe("app", function () {
 		})
 		
 		it('should initialize the router', function () {
-			//spyOn(Backbone.history, 'start');
 			app.initialize();
 			expect(app.router).toEqual(jasmine.any(AppRouter));
-			//expect(Backbone.history.start).toHaveBeenCalled();
 		});
     });
 	
@@ -145,9 +143,13 @@ describe("app", function () {
 				app.onDeviceReady();
 				app.register("news","images/calendar.png");
 				app.router.on('route:news', function () {
+					//console.log("test");
 					called = true;
 				});
-				Backbone.history.start();
+				if (!Backbone.History.started) {
+					Backbone.history.start();
+				}
+				
 				app.router.navigate("news");
 			});
 			

@@ -107,26 +107,7 @@
 
     <div id="horizontalWrapper">
         <div id="horizontalScroller" class="scroller">
-			<!-- News Screen -->
-            <div id="wrapper" class="wrapper">
-                <div id="scroller" class="scroller">
-                    <h3>News</h3>
-                </div>
-            </div>
-
-            <!-- Sermons Screen -->
-            <div id="wrapper2" class="wrapper">
-                <div id="scroller2" class="scroller">
-                    <h3>Sermon</h3>
-                </div>
-            </div>
-
-            <!-- Downloads Screen -->
-            <div id="wrapper3" class="wrapper">
-                <div id="scroller3" class="scroller">
-                    <h3>Downloads</h3>
-                </div>
-            </div>
+		
         </div>
     </div>
 
@@ -148,12 +129,18 @@
 	app.initialize();
     $(document).ready(function () {
         document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-
+		
+		$(document).trigger('deviceready');
 		
 		//setTimeout(function () {$(document).trigger('deviceready')}, 3000);
 		
-        //var newsView = new NewsCollectionView({displayName: "news"});
-		//var newsView1 = new NewsCollectionView({displayName: "news1"});
+        var newsView = new NewsCollectionView({displayName: "news"});
+		var newsView1 = new NewsCollectionView({displayName: "news1"});
+		var newsView2 = new NewsCollectionView({displayName: "news2"});
+		var newsView3 = new NewsCollectionView({displayName: "news3"});
+		if (!Backbone.History.started) {
+			Backbone.history.start();
+		}
         //var downloadView = new DownloadListView();
         //var sermonView = new SermonListView();
     });
@@ -161,3 +148,4 @@
 
 <!--<script src="http://jsconsole.com/remote.js?D55B5F65-1246-435B-952D-FEF9587DDC8A"></script>-->
 </body>
+

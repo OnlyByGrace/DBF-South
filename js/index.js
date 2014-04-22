@@ -40,18 +40,17 @@ var AppRouter = Backbone.Router.extend({
 });
  
 var app = {
-	//scroller: null,
+	scroller: null,
 	online: true,
 	screens: null,
 	router: null,
     // Application Constructor
     initialize: function() {
 		_.bindAll(this, 'bindEvents','onDeviceReady','register');
-		//_.extend(this,Backbone.Events);
-		//this.screens = new ScreenModelCollection();
+		_.extend(this,Backbone.Events);
+		this.screens = new ScreenModelCollection();
 		
-		//this.router = new AppRouter();
-		//Backbone.history.start();
+		this.router = new AppRouter();
 		
         this.bindEvents();
     },
@@ -60,35 +59,34 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        //$(document).on('deviceready',this.onDeviceReady);
+        $(document).on('deviceready',this.onDeviceReady);
 		//document.addEventListener('deviceready', this.onDeviceReady, false);
-		this.onDeviceReady();
+		//this.onDeviceReady();
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-		// this.online = this.checkConnection();
-		// $(document).on('offline',this.offlineFunc);
-		// $(document).on('online',this.onlineFunc);
+		this.online = this.checkConnection();
+		$(document).on('offline',this.offlineFunc);
+		$(document).on('online',this.onlineFunc);
 	
-		var myscroller = new IScroll('#horizontalWrapper', {
-            scrollx: true,
-            scrolly: false,
+		this.scroller = new IScroll('#horizontalWrapper', {
+            scrollX: true,
+            scrollY: false,
             momentum: false,
             snap: true,
-            snapspeed: 400,
+            snapSpeed: 400,
             //click: true,
-            tap: true
-            // indicators: {
-                // el: document.getElementById('scrollIndicator'),
-                // resize: false
-            // }
+            tap: true,
+            indicators: {
+                el: document.getElementById('scrollIndicator'),
+                resize: false
+            }
         });
-		myscroller.goToPage(0,0);
 		
-		//app.trigger('deviceready');
+		app.trigger('deviceready');
     },
 	
 	checkConnection: function () {
@@ -107,11 +105,15 @@ var app = {
 		if (!this.screens.findWhere({name:thisName})) {
 			this.screens.add(new ScreenModel({'name': thisName, 'icon': thisIcon}));
 			this.router.route(thisName,thisName);
-			$('#horizontalScroller').append("<div id='"+thisName+"Screen'></div>");
+			$('#horizontalScroller').append("<div id='"+thisName+"Screen' class='wrapper'></div>");
 			$('#horizontalScroller').css("width",(this.screens.length*100)+"%");
-			$('#scrollIndicator').prepend("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
+			$('#scrollIndicator').parent().prepend("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
 			
-			this.scroller.refresh();
+			$('div.wrapper').css("width",(100/this.screens.length)+"%");
+			
+			setTimeout(function () {
+				app.scroller.refresh();
+			}, 10);
 			
 			return ("#"+thisName+"Screen");
 		}
