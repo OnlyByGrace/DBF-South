@@ -60,8 +60,6 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         $(document).on('deviceready',this.onDeviceReady);
-		//document.addEventListener('deviceready', this.onDeviceReady, false);
-		//this.onDeviceReady();
     },
     // deviceready Event Handler
     //
@@ -90,6 +88,16 @@ var app = {
     },
 	
 	checkConnection: function () {
+		if (navigator.connection) {
+			var networkState = navigator.connection.type;
+			if (networkState = Connection.NONE) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+		return true;
 	},
 	
 	offlineFunc: function () {

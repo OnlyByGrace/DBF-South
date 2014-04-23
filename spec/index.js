@@ -41,6 +41,9 @@ describe("app", function () {
 	
 	describe('onDeviceReady', function() {
 		beforeEach(function() {
+			window.Connection = { NONE : 0, ELSE : 1};
+			navigator.connection = {};
+			navigator.connection.type = Connection.NONE;
 			$('body').append("<div id='stage'></div>");
 			var el = $('#stage');
 			el.append("<div id='scrollIndicator'><div></div></div><div id='horizontalWrapper'><div></div></div>");
@@ -48,6 +51,7 @@ describe("app", function () {
 		
 		afterEach(function() {
 			$('#stage').remove();
+			window.Connection = null;
 		});
 	
         it('should report that it fired', function() {
@@ -119,6 +123,7 @@ describe("app", function () {
 
 	describe('register', function () {
 		beforeEach(function() {
+			window.Connection = { NONE : 0, ELSE : 1};
 			$('body').append("<div id='stage'></div>");
 			var el = $('#stage');
 			el.append("<div id='scrollIndicator'><div></div></div><div id='horizontalWrapper'><div id='horizontalScroller'></div></div>");
@@ -126,6 +131,7 @@ describe("app", function () {
 		
 		afterEach(function() {
 			$('#stage').remove();
+			window.Connection = null;
 		});
 	
 		it('should create a new app screen model', function () {
