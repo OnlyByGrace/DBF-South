@@ -13,7 +13,9 @@ var NewsModelView = Backbone.View.extend({
 	tagName: "div",
 	className: "news-item",
 	initialize: function () {
-		_.bindAll(this, 'render');
+		_.bindAll(this, 'render','unrender');
+		
+		this.model.on("destroy",this.unrender);
 		
 		var source = $("#entry-template").html();
         this.template = Handlebars.compile(source);
@@ -22,6 +24,12 @@ var NewsModelView = Backbone.View.extend({
 	render: function () {
 		$(this.el).html(this.template(this.model.attributes));
 		return this.el;
+	},
+	
+	unrender: function () {
+		if (this.$el) {
+			this.remove();
+		}
 	}
 });
 
@@ -29,7 +37,7 @@ var NewsCollection = Backbone.Collection.extend({
 	model: NewsModel,
 	
 	initialize: function () {
-		_.bindAll(this, 'loadCache','sync','save','complete');
+		_.bindAll(this, 'loadCache','sync','save','complete','fetch');
 		
 		this.listenTo(this,"add",this.save);
 		this.listenTo(this,"remove", this.save);
@@ -41,12 +49,22 @@ var NewsCollection = Backbone.Collection.extend({
 		this.set(tempCollection);
 	},
 	
-	loadLive: function () {	
-		$.ajax({ context: this, type: 'GET', url: 'http://dbfsouth.org/?option=com_content&view=category&id=35&format=feed', cache: false, success: this.complete })
+	loadLive: function (options) {	
+		$.ajax({ context: this,
+			type: 'GET',
+			url: 'http://dbfsouth.org/?option=com_content&view=category&id=35&format=feed',
+			cache: false})
+			.fail(function () {
+				options.error();
+			})
+			.done(function (data) {
+				this.complete(data);
+				options.success();
+			});
+			
 	},
 	
 	complete: function (data) {
-		this.reset();
         var self = this;
         $(data).find("item").each(function () { // or "item" or whatever suits your feed
             var el = $(this);
@@ -59,16 +77,21 @@ var NewsCollection = Backbone.Collection.extend({
 				id: el.find("guid").text()
 			};
             //console.log(JSON.stringify(elData));
-            self.add(new NewsModel(elData));
+			self.set(new NewsModel(elData), {remove: false});
         });
+		//console.log(this.toJSON());
 	},
 	
-	sync: function (method) {
+	sync: function (method, collection, options) {
 		if (this.length === 0) {
 			this.loadCache();
 		}
 		if (app.online) {
-			this.loadLive();
+			this.loadLive(options);
+		} else {
+			if (options) {
+				options.error();
+			}
 		}
 	},
 	

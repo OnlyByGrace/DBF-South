@@ -112,7 +112,15 @@ describe("News Section", function () {
 			it("should return the element", function () {
 				expect(thisView.render()).toBeTruthy();
 			});
-		})
+		});
+		
+		describe("unrender", function () {
+			it("should remove its element when the model is destroyed", function () {
+				spyOn(thisView, 'remove');
+				thisView.model.destroy();
+				expect(thisView.remove).toHaveBeenCalled();
+			});
+		});
 	});
 	
 	describe("news collection", function () {
@@ -168,11 +176,13 @@ describe("News Section", function () {
 			});
 			
 			it("if app is online, attempt online load", function () {
+				var called = true;
 				runs(function () {
 					app.online = true;
-					spyOn(thisCollection,'loadLive').andCallThrough();
-					spyOn($, 'ajax').andCallFake(function (opts) {
-						opts['success'](sampleData);
+					
+					spyOn(thisCollection,'loadLive').andCallFake(function () {
+						thisCollection.complete(sampleData);
+						called = true;
 					});
 					thisCollection.fetch();
 				});
@@ -182,8 +192,35 @@ describe("News Section", function () {
 				}, "loadLive should have been called", 500);
 				
 				runs(function () {
+					console.log(thisCollection.toJSON());
 					expect(thisCollection.pluck("title")).toEqual(["Easter Sunday Service 2014","Good Friday and Resurrection Sunday Services","Pardon our dust!"]);
 					console.log(thisCollection.pluck("date"));
+					expect(called).toBe(true);
+				});
+			});
+			
+			it("if app is offline, immediately call error callback", function () {
+				var called = false;
+				var options = {
+					success: function () {
+						called = true;
+					},
+					error: function () {
+						called = true;
+					}
+				};
+				runs(function () {
+					app.online = false;
+					
+					thisCollection.fetch(options);
+				});
+				
+				waitsFor(function () {
+					return (called == true);
+				}, "sync should have been called with callbacks", 500);
+				
+				runs(function () {
+					expect(called).toBe(true);
 				});
 			});
 		});
@@ -285,6 +322,10 @@ describe("News Section", function () {
 				thisCollection.collection.add(thisModel);
 				expect(thisCollection.$el.append).toHaveBeenCalled();
 			});
+		});
+		
+		describe("unrender", function () {
+			
 		});
 	});
 });	
