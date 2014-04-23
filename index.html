@@ -130,8 +130,6 @@
     $(document).ready(function () {
         document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 		
-		$(document).trigger('deviceready');
-		
 		//setTimeout(function () {$(document).trigger('deviceready')}, 3000);
 		
         var newsView = new NewsCollectionView({displayName: "news"});
@@ -141,6 +139,8 @@
 		if (!Backbone.History.started) {
 			Backbone.history.start();
 		}
+		
+		//$(document).trigger('deviceready');
         //var downloadView = new DownloadListView();
         //var sermonView = new SermonListView();
     });

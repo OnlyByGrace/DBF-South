@@ -90,7 +90,7 @@ var app = {
 	checkConnection: function () {
 		if (navigator.connection) {
 			var networkState = navigator.connection.type;
-			if (networkState = Connection.NONE) {
+			if (networkState == Connection.NONE) {
 				return false;
 			} else {
 				return true;
@@ -119,9 +119,11 @@ var app = {
 			
 			$('div.wrapper').css("width",(100/this.screens.length)+"%");
 			
-			setTimeout(function () {
-				app.scroller.refresh();
-			}, 10);
+			if (this.scroller) {
+				setTimeout(function () {
+					app.scroller.refresh();
+				}, 10);
+			}
 			
 			return ("#"+thisName+"Screen");
 		}

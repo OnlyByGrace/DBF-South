@@ -41,7 +41,25 @@ var sampleData = '<?xml version="1.0" encoding="utf-8"?> \
 			<pubDate>Thu, 24 Jan 2013 05:28:55 +0530</pubDate> \
 		</item> \
 	</channel> \
-</rss>'
+</rss>';
+
+var newsTemplate = '<script id="entry-template" type="text/x-handlebars-template"> \
+        <h5>{{title}}</h5> \
+        <p class="entry-text"> \
+            {{{content}}} \
+        </p> \
+    </script>';
+
+// '<script id="news-template" type="text/x-handlebars-template"> \
+        // <div id="newsWrapper" class="wrapper"> \
+            // <div id="newsScroller" class="scroller"> \
+                // <h5>{{title}}</h5> \
+                // <p class="news-text"> \
+                    // {{content}} \
+                // </p> \
+            // </div> \
+        // </div> \
+    // </script>';
 
 
 describe("News Section", function () {
@@ -70,8 +88,14 @@ describe("News Section", function () {
 		var thisView = {};
 	
 		beforeEach(function() {
+			$('body').append("<div id='stage'></div>");
+			$('#stage').append(newsTemplate);
 			var thisModel = new NewsModel({title: "Test", content: "This is a test"});			
 			thisView = new NewsModelView({model: thisModel});
+		});
+		
+		afterEach(function () {
+			$('#stage').remove();
 		});
 		
 		describe("initialization", function () {
@@ -79,10 +103,16 @@ describe("News Section", function () {
 				expect(thisView.model).toBeDefined();
 			});
 			
-			it("should render immediately", function () {
-				expect(thisView.$el.html()).toBeTruthy();
+			it("should setup the template", function () {
+				expect(thisView.template).toBeTruthy();
 			});
 		});
+		
+		describe("render", function () {
+			it("should return the element", function () {
+				expect(thisView.render()).toBeTruthy();
+			});
+		})
 	});
 	
 	describe("news collection", function () {
@@ -197,8 +227,23 @@ describe("News Section", function () {
 		var thisCollection = {};
 		
 		beforeEach(function () {
+			$('body').append("<div id='stage'></div>");
+			var el = $('#stage');
+			window.Connection = { NONE : 0, ELSE : 1};
+			navigator.connection = {};
+			navigator.connection.type = Connection.NONE;
+			el.append("<div id='scrollIndicator'><div></div></div><div id='horizontalWrapper'><div id='horizontalScroller'></div></div>");
+			el.append(newsTemplate);
+			
 			app.initialize();
+			app.onDeviceReady();
 			thisCollection = new NewsCollectionView();
+		});
+		
+		afterEach(function () {
+			$('#stage').remove();
+			window.Connection = null;
+			navigator.connection = null;
 		});
 		
 		describe("initialization", function () {
@@ -211,12 +256,12 @@ describe("News Section", function () {
 			});
 			
 			it("should render", function () {
-				expect(thisCollection.$el.html()).toBe("<h6>News</h6>");
-				expect(thisCollection.$el.hasClass("scroller")).toBe(true);
+				expect(thisCollection.$el.html()).toBeTruthy();
+				expect(thisCollection.$el.hasClass("wrapper")).toBe(true);
 			});
 		});
 		
-		describe("loading", function () {
+		describe("deviceReady", function () {
 			it("should fetch collection items on app.deviceready", function () {
 				runs(function () {
 					spyOn(thisCollection.collection,"fetch");
@@ -230,6 +275,15 @@ describe("News Section", function () {
 				runs(function () {
 					expect(thisCollection.collection.fetch).toHaveBeenCalled();
 				});
+			});
+		});
+		
+		describe("itemAdded", function () {
+			it("should render a new NewsModelView", function () {
+				spyOn(thisCollection.$el,'append');
+				var thisModel = new NewsModel({title: "Test", content: "This is a test"});
+				thisCollection.collection.add(thisModel);
+				expect(thisCollection.$el.append).toHaveBeenCalled();
 			});
 		});
 	});

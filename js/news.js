@@ -15,11 +15,13 @@ var NewsModelView = Backbone.View.extend({
 	initialize: function () {
 		_.bindAll(this, 'render');
 		
-		this.render();
+		var source = $("#entry-template").html();
+        this.template = Handlebars.compile(source);
 	},
 	
 	render: function () {
-		$(this.el).html(this.model.get("content"));
+		$(this.el).html(this.template(this.model.attributes));
+		return this.el;
 	}
 });
 
@@ -61,7 +63,7 @@ var NewsCollection = Backbone.Collection.extend({
         });
 	},
 	
-	sync: function () {
+	sync: function (method) {
 		if (this.length === 0) {
 			this.loadCache();
 		}
@@ -71,13 +73,13 @@ var NewsCollection = Backbone.Collection.extend({
 	},
 	
 	save: function () {
-		window.localStorage.setItem("newsCache",JSON.stringify(this.models));
+		window.localStorage.setItem("newsCache",JSON.stringify(this));
 	}
 });
 
 var NewsCollectionView = Backbone.View.extend({
 	initialize: function(opts) {
-		_.bindAll(this,'deviceReady','render');
+		_.bindAll(this,'deviceReady','render','itemAdded');
 		
 		if (opts) {
 			this.displayName = opts.displayName;
@@ -87,15 +89,20 @@ var NewsCollectionView = Backbone.View.extend({
 		this.setElement(app.register(this.displayName,"images/glyphicons_045_calendar.png"));
 		
 		this.collection = new NewsCollection();
-		this.collection.on("add",this.collection.save);
+		this.collection.on("add",this.itemAdded);
 		
 		this.listenTo(app, "deviceready", this.deviceReady);
 		
 		this.render();
 	},
 	
+	itemAdded: function (newModel) {
+		var newView = new NewsModelView({model: newModel});
+		this.$el.append(newView.render());
+	},
+	
 	render: function () {
-		this.$el.append("<h6>News</h6>");
+		this.$el.append("<h6>News</h6> No data available.");
 	},
 	
 	deviceReady: function () {
