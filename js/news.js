@@ -35,7 +35,7 @@ var NewsModelView = Backbone.View.extend({
 
 var NewsCollection = Backbone.Collection.extend({
 	model: NewsModel,
-	
+	lastUpdate: null,
 	initialize: function () {
 		_.bindAll(this, 'loadCache','sync','save','complete','fetch');
 		
@@ -80,6 +80,7 @@ var NewsCollection = Backbone.Collection.extend({
 			self.set(new NewsModel(elData), {remove: false});
         });
 		//console.log(this.toJSON());
+		this.lastUpdate = new Date().toLocaleTimeString();
 	},
 	
 	sync: function (method, collection, options) {
@@ -102,7 +103,7 @@ var NewsCollection = Backbone.Collection.extend({
 
 var NewsCollectionView = Backbone.View.extend({
 	initialize: function(opts) {
-		_.bindAll(this,'deviceReady','render','itemAdded');
+		_.bindAll(this,'deviceReady','render','itemAdded','collectionLoaded','collectionError');
 		
 		if (opts) {
 			this.displayName = opts.displayName;
@@ -125,10 +126,20 @@ var NewsCollectionView = Backbone.View.extend({
 	},
 	
 	render: function () {
-		this.$el.append("<h6>News</h6> No data available.");
+		this.$el.append("<h6>News</h6>");
 	},
 	
 	deviceReady: function () {
-		this.collection.fetch();
+		this.$el.prepend("<div class='loadingbanner'>Loading...</div>");
+		this.collection.fetch({success: this.collectionLoaded, error: this.collectionError});
+	},
+	
+	collectionLoaded: function () {
+		this.$el.children('.loadingbanner').remove();
+	},
+	
+	collectionError: function () {
+		this.$el.children('.loadingbanner').remove();
+		this.$el.prepend("<div class='offlinebanner'>Last updated "+this.collection.lastUpdate+"</div>");
 	}
 });

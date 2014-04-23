@@ -315,6 +315,44 @@ describe("News Section", function () {
 			});
 		});
 		
+		describe("loading", function () {
+			it("should display a loading banner when there is a pending fetch", function () {
+				runs(function () {
+					spyOn(thisCollection.collection,'fetch');
+					app.trigger('deviceready');
+				});
+				
+				waitsFor(function () {
+					return (thisCollection.collection.fetch.calls.length > 0);
+				});
+				
+				runs(function () {
+					expect(thisCollection.$el.children('.loadingbanner').length).toBeTruthy();
+					thisCollection.collectionLoaded();
+					expect(thisCollection.$el.children('.loadingbanner').length).toBeFalsy();
+				});
+			});
+			
+			it("should display an offline banner when there is a no connection", function () {
+				runs(function () {
+					app.online = false;
+					spyOn(thisCollection.collection,'fetch');
+					app.trigger('deviceready');
+				});
+				
+				waitsFor(function () {
+					return (thisCollection.collection.fetch.calls.length > 0);
+				});
+				
+				runs(function () {
+					expect(thisCollection.$el.children('.loadingbanner').length).toBeTruthy();
+					thisCollection.collectionError();
+					expect(thisCollection.$el.children('.loadingbanner').length).toBeFalsy();
+					expect(thisCollection.$el.children('.offlinebanner').length).toBeTruthy();
+				});
+			});
+		});
+		
 		describe("itemAdded", function () {
 			it("should render a new NewsModelView", function () {
 				spyOn(thisCollection.$el,'append');
@@ -322,10 +360,6 @@ describe("News Section", function () {
 				thisCollection.collection.add(thisModel);
 				expect(thisCollection.$el.append).toHaveBeenCalled();
 			});
-		});
-		
-		describe("unrender", function () {
-			
 		});
 	});
 });	

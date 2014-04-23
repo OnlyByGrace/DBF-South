@@ -380,3 +380,8 @@ body
     {
         width: 100%;
     }
+	
+.loadingbanner {
+	width: 100%;
+	background-color: green;
+}
