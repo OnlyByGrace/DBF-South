@@ -1,7 +1,7 @@
 describe("Caching Collection",function () {
 	beforeEach(function () {
-		thisCollection = new CachingCollection([],{name: "test"});
-		thisCollection.name = "base";
+		thisCollection = new CachingCollection([],{name: "base"});
+		//thisCollection.name = "base";
 		thisCollection.url = "filler";
 	});
 	
@@ -16,6 +16,10 @@ describe("Caching Collection",function () {
 		
 		it("should have a url set", function () {
 			expect(thisCollection.url).toBeDefined();
+		});
+		
+		it("should set the name from parameters", function () {
+			expect(thisCollection.name).toBe("base");
 		});
 	});
 	

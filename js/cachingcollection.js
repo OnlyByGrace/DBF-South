@@ -1,8 +1,14 @@
 var CachingCollection = Backbone.Collection.extend({	
-	initialize: function () {
+	initialize: function (models,opts) {
 		this.listenTo(this, 'add', this.save);
 		this.listenTo(this, 'remove', this.save);
 		this.listenTo(this, 'reset', this.save);
+		
+		if (opts) {
+			if (opts.name) {
+				this.name = opts.name;
+			}
+		}
 		
 		this.init();
 	},
@@ -63,9 +69,13 @@ var CachingCollectionView = Backbone.View.extend({
 	displayName: '',
 	icon: '',
 	initialize: function (opts) {
+		_.bindAll(this, 'itemAdded', 'refresh', 'onDeviceReady', 'onCollectionLoaded', 'onCollectionError');
+	
 		if (!this.collection) {
 			throw "No collection specified";
 		}
+		
+		this.collection = new this.collection();
 		
 		if (opts) {
 			if (opts.displayName) {
@@ -105,7 +115,7 @@ var CachingCollectionView = Backbone.View.extend({
 	
 	onCollectionError: function () {
 		this.$el.children('.loadingbanner').remove();
-		this.$el.prepend("<div class='offlinebanner' style='width:"+this.$el.css("width")+"'>Last updated "+this.collection.lastUpdate+"</div>");
+		this.$el.prepend("<div class='offlinebanner' style='width:100%'>Last updated "+this.collection.lastUpdate+"</div>");
 		if (this.collection.lastUpdate == null) {
 			this.$el.children('.offlinebanner').text("No connection");
 		}

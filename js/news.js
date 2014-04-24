@@ -58,7 +58,7 @@ var NewsCollection = CachingCollection.extend({
 var NewsCollectionView = CachingCollectionView.extend({
 	displayName: 'news',
 	icon: "images/glyphicons_045_calendar.png",
-	collection: new NewsCollection(),
+	collection: NewsCollection,
 	
 	itemAdded: function (newModel) {
 		var newView = new NewsModelView({model: newModel});

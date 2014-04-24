@@ -127,8 +127,8 @@ body
 
 .wrapper
 {
+	position: relative;
     z-index: 1;
-    top: 0px;
     width: 33.33333%;
     background: #ccc;
     height: 100%;
@@ -151,7 +151,7 @@ body
     position: absolute;
     z-index: 1;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-    width: 33.33333%;
+    width: 100%;
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
     -ms-transform: translateZ(0);

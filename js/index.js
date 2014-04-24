@@ -118,6 +118,7 @@ var app = {
 			$('#scrollIndicator').parent().prepend("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
 			
 			$('div.wrapper').css("width",(100/this.screens.length)+"%");
+			console.log((100/this.screens.length)+"%");
 			
 			if (this.scroller) {
 				setTimeout(function () {
