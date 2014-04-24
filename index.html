@@ -31,14 +31,14 @@
     <script id="sermon-template" type="text/x-handlebars-template">
         {{title}}<br />
         {{description}} - {{author}}    
-        <!--<div class="sermon-links">-->
-            <!-- <div class="playLink"></div> -->
+        <div class="sermon-links">
+             <div class="playLink"></div> 
             {{#if downloaded}}
-                <!-- <div class="downloadedLink"></div> -->
+                 <div class="downloadedLink"></div> 
             {{else}}
-                <!-- <<div class="downloadLink"></div> -->
+                 <div class="downloadLink"></div> 
             {{/if}}
-        <!--</div>-->
+        </div>
         <!--<div class="bottomDownloadedLink"></div>
         <div class="bottomPlayLink"></div>-->
     </script>
@@ -139,8 +139,8 @@
 		
         var newsView = new NewsCollectionView({displayName: "News"});
 		var sermonsView = new SermonCollectionView();
-		var newsView2 = new NewsCollectionView({displayName: "News2"});
-		var newsView3 = new NewsCollectionView({displayName: "News3"});
+		var sermonsView1 = new SermonCollectionView({displayName: "LatestSermons"});
+		var sermonsView2 = new SermonCollectionView({displayName: "NewestSermons"});
 		if (!Backbone.History.started) {
 			Backbone.history.start();
 		}

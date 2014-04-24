@@ -11,7 +11,11 @@ var SermonModel = Backbone.Model.extend({
 
 var SermonModelView = TemplateModelView.extend({
 	className: 'sermon-item',
-	template: 'sermon-template'
+	template: 'sermon-template',
+	
+	onTap: function () {
+		alert("yeah");
+	}
 });
 
 var SermonCollection = CachingCollection.extend({
@@ -44,9 +48,5 @@ var SermonCollectionView = CachingCollectionView.extend({
 		var newView = new SermonModelView({model: newModel});
 		this.$el.append(newView.render());
 		this.refresh();
-	},
-	
-	onTap: function () {
-		alert("yeah");
 	}
 });
