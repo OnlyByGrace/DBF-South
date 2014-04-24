@@ -57,3 +57,45 @@ var CachingCollection = Backbone.Collection.extend({
 		window.localStorage.setItem(this.name+"Cache",JSON.stringify(this));
 	}
 });
+
+var CachingCollectionView = Backbone.View.extend({
+	displayName: '',
+	icon: '',
+	initialize: function (opts) {
+		if (!this.collection) {
+			throw "No collection specified";
+		}
+		
+		if (opts.displayName) {
+			this.displayName = opts.displayName;
+		}
+		
+		if (opts.icon) {
+			this.icon = opts.icon;
+		}
+		
+		var tempEl = app.register(this.displayName,this.icon);
+		this.initializeScroller(tempEl);
+		
+		this.listenTo(this.collection,"add",this.itemAdded);
+		
+		this.render();
+	},
+	
+	itemAdded: function () {
+	},
+	
+	refresh: function () {
+		this.scroller.refresh();
+	},
+	
+	render: function () {
+		this.$el.html("<h6>"+this.displayName+"</h6>");
+	},
+	
+	initializeScroller: function (tempEl) {
+		$(tempEl).append("<div class='scroller'></div>");
+		this.setElement($(tempEl).children()[0]);
+		this.scroller = new IScroll(tempEl);
+	}
+});

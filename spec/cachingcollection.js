@@ -154,3 +154,78 @@ describe("Caching Collection",function () {
 		});
 	});
 });
+
+describe("CachingCollection View", function () {
+	
+	beforeEach(function () {
+		$('body').append("<div id='stage'></div>");
+	});
+	
+	afterEach(function () {
+		$('#stage').remove();
+	});
+	
+	describe("initialize", function () {
+		it("should throw an error of no collection is specified", function () {
+			var error = false;
+			try {
+				var thisView = new CachingCollectionView();
+			} catch (err) {
+				var error = true;
+			}
+			
+			expect(error).toBe(true);
+		});
+		
+		it("should register with app with displayName", function() {
+			spyOn(app,'register').andReturn("#stage");
+			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test", icon: ""});
+			expect(app.register).toHaveBeenCalledWith("Test",thisView.icon);
+		});
+		
+		it("should setup the scroller", function () {
+			spyOn(app,'register').andReturn("#stage");
+			var thisView = new CachingCollectionView({collection: new NewsCollection()});
+			expect(thisView.scroller).toBeTruthy();
+		});
+		
+		it("should render", function () {
+			spyOn(app,'register').andReturn("#stage");
+			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			expect(thisView.$el.html()).toBe("<h6>"+thisView.displayName+"</h6>");
+		});
+	});
+	
+	describe("refresh", function () {
+		it("should refresh the scroller", function () {
+			spyOn(app,'register').andReturn("#stage");
+			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			spyOn(thisView.scroller, 'refresh');
+			thisView.refresh();
+			
+			expect(thisView.scroller.refresh).toHaveBeenCalled();
+		});
+	});
+	
+	describe("onDeviceReady", function () {
+		it("should add a loading banner", function () {
+			
+		});
+		
+		it("should fetch collection items", function () {
+		
+		});
+	});
+	
+	describe("onCollectionLoaded", function () {
+		it("should remove the loading banner", function () {
+		
+		});
+	});
+	
+	describe("onCollectionError", function () {
+		it("should place the loading banner with a last updated banner", function () {
+		
+		});
+	});
+});

@@ -66,7 +66,7 @@ var NewsCollectionView = Backbone.View.extend({
 		}
 		var tempEl = app.register(this.displayName,"images/glyphicons_045_calendar.png");
 		$(tempEl).append("<div class='scroller'></div>");
-		this.setElement($(tempEl).children('.scroller')[0]);
+		this.setElement($(tempEl).children()[0]);
 		this.scroller = new IScroll("#"+$(tempEl).attr('id'));
 		
 		this.collection = new NewsCollection();
