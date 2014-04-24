@@ -192,9 +192,9 @@ describe("News Section", function () {
 				}, "loadLive should have been called", 500);
 				
 				runs(function () {
-					console.log(thisCollection.toJSON());
+					//console.log(thisCollection.toJSON());
 					expect(thisCollection.pluck("title")).toEqual(["Easter Sunday Service 2014","Good Friday and Resurrection Sunday Services","Pardon our dust!"]);
-					console.log(thisCollection.pluck("date"));
+					//console.log(thisCollection.pluck("date"));
 					expect(called).toBe(true);
 				});
 			});

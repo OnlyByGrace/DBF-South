@@ -8,6 +8,8 @@
 		"lib/iscroll.js",
 		"js/index.js",
 		"spec/index.js",
+		"js/cachingcollection.js",
+		"spec/cachingcollection.js",
 		"js/news.js",
 		"spec/news.js",
 		"js/sermons.js",
