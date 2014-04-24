@@ -19,6 +19,7 @@ var CachingCollection = Backbone.Collection.extend({
 	
 	loadCache: function () {
 		var items = JSON.parse(window.localStorage.getItem(this.name+"Cache"));
+		console.log(items);
 		this.set(items);
 	},
 	
@@ -28,11 +29,11 @@ var CachingCollection = Backbone.Collection.extend({
 			url: this.url,
 			cache: false})
 			.fail(function () {
-				options.error();
+				options.errorCallback();
 			})
 			.done(function (data) {
 				this.complete(data);
-				options.success();
+				options.successCallback();
 			});
 	},
 	
@@ -55,7 +56,7 @@ var CachingCollection = Backbone.Collection.extend({
 		if ((app.online == true) && this.url) {
 			this.loadLive(options);
 		} else {
-			options.error();
+			options.errorCallback();
 		}
 	},
 	
@@ -75,8 +76,6 @@ var CachingCollectionView = Backbone.View.extend({
 			throw "No collection specified";
 		}
 		
-		this.collection = new this.collection({name:this.displayName});
-		
 		if (opts) {
 			if (opts.displayName) {
 				this.displayName = opts.displayName;
@@ -86,6 +85,8 @@ var CachingCollectionView = Backbone.View.extend({
 				this.icon = opts.icon;
 			}
 		}
+		
+		this.collection = new this.collection([],{name:this.displayName});
 		
 		var tempEl = app.register(this.displayName,this.icon);
 		this.initializeScroller(tempEl);
@@ -106,7 +107,7 @@ var CachingCollectionView = Backbone.View.extend({
 	
 	onDeviceReady: function () {
 		this.$el.prepend("<div class='loadingbanner' style='width:"+this.$el.css("width")+"'>Loading...</div>");
-		this.collection.fetch({success: this.onCollectionLoaded, error: this.onCollectionError});
+		this.collection.fetch({successCallback: this.onCollectionLoaded, errorCallback: this.onCollectionError});
 	},
 	
 	onCollectionLoaded: function () {
@@ -128,6 +129,6 @@ var CachingCollectionView = Backbone.View.extend({
 	initializeScroller: function (tempEl) {
 		$(tempEl).append("<div class='scroller'></div>");
 		this.setElement($(tempEl).children()[0]);
-		this.scroller = new IScroll(tempEl,{tap: true});
+		this.scroller = new IScroll(tempEl);
 	}
 });
