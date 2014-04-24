@@ -9,28 +9,9 @@ var NewsModel = Backbone.Model.extend({
 	}
 });
 
-var NewsModelView = Backbone.View.extend({
-	tagName: "div",
+var NewsModelView = TemplateModelView.extend({
 	className: "news-item",
-	initialize: function () {
-		_.bindAll(this, 'render','unrender');
-		
-		this.model.on("destroy",this.unrender);
-		
-		var source = $("#entry-template").html();
-        this.template = Handlebars.compile(source);
-	},
-	
-	render: function () {
-		$(this.el).html(this.template(this.model.attributes));
-		return this.el;
-	},
-	
-	unrender: function () {
-		if (this.$el) {
-			this.remove();
-		}
-	}
+	template: "#entry-template"
 });
 
 var NewsCollection = CachingCollection.extend({

@@ -1,4 +1,4 @@
-describe("Tempate Model View", function () {
+describe("Template Model View", function () {
 	beforeEach(function () {
 		$('body').append("<div id='test-template'><h5>{{title}}</h5></div>");
 	});
@@ -7,7 +7,7 @@ describe("Tempate Model View", function () {
 		$('#test-template').remove();
 	});
 
-	describe("initalize", function () {
+	describe("initialize", function () {
 		it("should create a template from the template parameter", function () {
 			var thisView = new TemplateModelView({template: '#test-template'});
 			expect(thisView.template).toBeTruthy();

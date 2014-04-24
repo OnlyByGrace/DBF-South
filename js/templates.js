@@ -5,11 +5,16 @@ var TemplateModelView = Backbone.View.extend({
 	initialize: function (opts) {
 		_.bindAll(this,'render','unrender','onTap');
 		
-		if ((!opts) || (!opts.template)) {
+		if ((!opts) || (!opts.template) && (!this.template)) {
 			throw "No template specified";
 		}
 		
-		var source = $(opts.template).html();
+		var templateId = opts.template;
+		if (!templateId) {
+			templateId = this.template;
+		}
+		
+		var source = $(templateId).html();
         this.template = Handlebars.compile(source);
 		
 		if (this.model) {
