@@ -184,24 +184,24 @@ describe("CachingCollection View", function () {
 		
 		it("should register with app with displayName", function() {
 			
-			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test", icon: ""});
+			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test", icon: ""});
 			expect(app.register).toHaveBeenCalledWith("Test",thisView.icon);
 		});
 		
 		it("should setup the scroller", function () {
-			var thisView = new CachingCollectionView({collection: new NewsCollection()});
+			var thisView = new CachingCollectionView({collection: NewsCollection});
 			expect(thisView.scroller).toBeTruthy();
 		});
 		
 		it("should render", function () {
-			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test"});
 			expect(thisView.$el.html()).toBe("<h6>"+thisView.displayName+"</h6>");
 		});
 	});
 	
 	describe("refresh", function () {
 		it("should refresh the scroller", function () {
-			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test"});
 			spyOn(thisView.scroller, 'refresh');
 			thisView.refresh();
 			
@@ -211,14 +211,14 @@ describe("CachingCollection View", function () {
 	
 	describe("onDeviceReady", function () {
 		it("should add a loading banner", function () {
-			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test"});
 			spyOn(thisView.collection,'sync');
 			thisView.onDeviceReady();
 			expect(thisView.$el.children('.loadingbanner').length).toBeTruthy();
 		});
 		
 		it("should fetch collection items", function () {
-			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test"});
 			spyOn(thisView.collection,'sync');
 			thisView.onDeviceReady();
 			expect(thisView.collection.sync).toHaveBeenCalled();
@@ -228,7 +228,7 @@ describe("CachingCollection View", function () {
 	describe("loading", function () {
 		var thisView;
 		beforeEach(function () {
-			thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test"});
 		});
 	
 		it("should display a loading banner when there is a pending fetch", function () {
