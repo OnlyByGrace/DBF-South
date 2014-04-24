@@ -1,5 +1,7 @@
-var CachingCollection = Backbone.Collection.extend({	
+var CachingCollection = Backbone.Collection.extend({
+	lastUpdate: "never",
 	initialize: function (models,opts) {
+		_.bindAll(this,'loadCache','loadLive','sync','save');
 		this.listenTo(this, 'add', this.save);
 		this.listenTo(this, 'remove', this.save);
 		this.listenTo(this, 'reset', this.save);
@@ -19,7 +21,6 @@ var CachingCollection = Backbone.Collection.extend({
 	
 	loadCache: function () {
 		var items = JSON.parse(window.localStorage.getItem(this.name+"Cache"));
-		console.log(items);
 		this.set(items);
 	},
 	
@@ -50,6 +51,7 @@ var CachingCollection = Backbone.Collection.extend({
 		}
 		
 		if (this.length === 0) {
+			console.log("loading cache");
 			this.loadCache();
 		}
 		
