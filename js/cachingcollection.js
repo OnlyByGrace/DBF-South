@@ -59,6 +59,7 @@ var CachingCollection = Backbone.Collection.extend({
 });
 
 var CachingCollectionView = Backbone.View.extend({
+	el: '',
 	displayName: '',
 	icon: '',
 	initialize: function (opts) {
@@ -66,27 +67,48 @@ var CachingCollectionView = Backbone.View.extend({
 			throw "No collection specified";
 		}
 		
-		if (opts.displayName) {
-			this.displayName = opts.displayName;
-		}
-		
-		if (opts.icon) {
-			this.icon = opts.icon;
+		if (opts) {
+			if (opts.displayName) {
+				this.displayName = opts.displayName;
+			}
+			
+			if (opts.icon) {
+				this.icon = opts.icon;
+			}
 		}
 		
 		var tempEl = app.register(this.displayName,this.icon);
 		this.initializeScroller(tempEl);
 		
 		this.listenTo(this.collection,"add",this.itemAdded);
+		this.listenTo(app,"deviceready",this.onDeviceReady);
 		
 		this.render();
 	},
 	
+	/* Should be overwritten */
 	itemAdded: function () {
 	},
 	
 	refresh: function () {
 		this.scroller.refresh();
+	},
+	
+	onDeviceReady: function () {
+		this.$el.prepend("<div class='loadingbanner' style='width:"+this.$el.css("width")+"'>Loading...</div>");
+		this.collection.fetch({success: this.onCollectionLoaded, error: this.onCollectionError});
+	},
+	
+	onCollectionLoaded: function () {
+		this.$el.children('.loadingbanner').remove();
+	},
+	
+	onCollectionError: function () {
+		this.$el.children('.loadingbanner').remove();
+		this.$el.prepend("<div class='offlinebanner' style='width:"+this.$el.css("width")+"'>Last updated "+this.collection.lastUpdate+"</div>");
+		if (this.collection.lastUpdate == null) {
+			this.$el.children('.offlinebanner').text("No connection");
+		}
 	},
 	
 	render: function () {

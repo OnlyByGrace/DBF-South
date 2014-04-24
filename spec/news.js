@@ -247,7 +247,7 @@ describe("News Section", function () {
 			el.append(newsTemplate);
 			
 			app.initialize();
-			app.onDeviceReady();
+			//app.onDeviceReady();
 			thisCollection = new NewsCollectionView();
 		});
 		
@@ -280,7 +280,8 @@ describe("News Section", function () {
 			it("should fetch collection items on app.deviceready", function () {
 				runs(function () {
 					spyOn(thisCollection.collection,"fetch");
-					app.trigger("deviceready");
+					thisCollection.onDeviceReady();
+					//app.trigger("deviceready");
 				});
 				
 				waitsFor(function() {
@@ -297,16 +298,17 @@ describe("News Section", function () {
 			it("should display a loading banner when there is a pending fetch", function () {
 				runs(function () {
 					spyOn(thisCollection.collection,'fetch');
-					app.trigger('deviceready');
+					thisCollection.onDeviceReady();
+					//app.trigger('deviceready');
 				});
 				
 				waitsFor(function () {
 					return (thisCollection.collection.fetch.calls.length > 0);
-				});
+				},"device ready should fire fetch", 500);
 				
 				runs(function () {
 					expect(thisCollection.$el.children('.loadingbanner').length).toBeTruthy();
-					thisCollection.collectionLoaded();
+					thisCollection.onCollectionLoaded();
 					expect(thisCollection.$el.children('.loadingbanner').length).toBeFalsy();
 				});
 			});
@@ -315,16 +317,17 @@ describe("News Section", function () {
 				runs(function () {
 					app.online = false;
 					spyOn(thisCollection.collection,'fetch');
-					app.trigger('deviceready');
+					thisCollection.onDeviceReady();
+					//app.trigger('deviceready');
 				});
 				
 				waitsFor(function () {
 					return (thisCollection.collection.fetch.calls.length > 0);
-				});
+				},"device ready should fire fetch", 500);
 				
 				runs(function () {
 					expect(thisCollection.$el.children('.loadingbanner').length).toBeTruthy();
-					thisCollection.collectionError();
+					thisCollection.onCollectionError();
 					expect(thisCollection.$el.children('.loadingbanner').length).toBeFalsy();
 					expect(thisCollection.$el.children('.offlinebanner').length).toBeTruthy();
 				});

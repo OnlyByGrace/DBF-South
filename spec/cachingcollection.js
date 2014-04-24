@@ -158,11 +158,12 @@ describe("Caching Collection",function () {
 describe("CachingCollection View", function () {
 	
 	beforeEach(function () {
-		$('body').append("<div id='stage'></div>");
+		$('body').append("<div id='cachingstage'></div>");
+		spyOn(app,'register').andReturn("#cachingstage");
 	});
 	
 	afterEach(function () {
-		$('#stage').remove();
+		$('#cachingstage').remove();
 	});
 	
 	describe("initialize", function () {
@@ -178,19 +179,17 @@ describe("CachingCollection View", function () {
 		});
 		
 		it("should register with app with displayName", function() {
-			spyOn(app,'register').andReturn("#stage");
+			
 			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test", icon: ""});
 			expect(app.register).toHaveBeenCalledWith("Test",thisView.icon);
 		});
 		
 		it("should setup the scroller", function () {
-			spyOn(app,'register').andReturn("#stage");
 			var thisView = new CachingCollectionView({collection: new NewsCollection()});
 			expect(thisView.scroller).toBeTruthy();
 		});
 		
 		it("should render", function () {
-			spyOn(app,'register').andReturn("#stage");
 			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
 			expect(thisView.$el.html()).toBe("<h6>"+thisView.displayName+"</h6>");
 		});
@@ -198,7 +197,6 @@ describe("CachingCollection View", function () {
 	
 	describe("refresh", function () {
 		it("should refresh the scroller", function () {
-			spyOn(app,'register').andReturn("#stage");
 			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
 			spyOn(thisView.scroller, 'refresh');
 			thisView.refresh();
@@ -209,23 +207,60 @@ describe("CachingCollection View", function () {
 	
 	describe("onDeviceReady", function () {
 		it("should add a loading banner", function () {
-			
+			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			spyOn(thisView.collection,'sync');
+			thisView.onDeviceReady();
+			expect(thisView.$el.children('.loadingbanner').length).toBeTruthy();
 		});
 		
 		it("should fetch collection items", function () {
-		
+			var thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
+			spyOn(thisView.collection,'sync');
+			thisView.onDeviceReady();
+			expect(thisView.collection.sync).toHaveBeenCalled();
 		});
 	});
 	
-	describe("onCollectionLoaded", function () {
-		it("should remove the loading banner", function () {
-		
+	describe("loading", function () {
+		var thisView;
+		beforeEach(function () {
+			thisView = new CachingCollectionView({collection: new NewsCollection(), displayName: "Test"});
 		});
-	});
 	
-	describe("onCollectionError", function () {
-		it("should place the loading banner with a last updated banner", function () {
+		it("should display a loading banner when there is a pending fetch", function () {
+			runs(function () {
+				spyOn(thisView.collection,'fetch');
+				thisView.onDeviceReady();
+			});
+			
+			waitsFor(function () {
+				return (thisView.collection.fetch.calls.length > 0);
+			}, "should call fetch", 500);
+			
+			runs(function () {
+				expect(thisView.$el.children('.loadingbanner').length).toBeTruthy();
+				thisView.onCollectionLoaded();
+				expect(thisView.$el.children('.loadingbanner').length).toBeFalsy();
+			});
+		});
 		
+		it("should display an offline banner when there is a no connection", function () {
+			runs(function () {
+				app.online = false;
+				spyOn(thisView.collection,'fetch');
+				thisView.onDeviceReady();
+			});
+			
+			waitsFor(function () {
+				return (thisView.collection.fetch.calls.length > 0);
+			},"should call fetch", 500);
+			
+			runs(function () {
+				expect(thisView.$el.children('.loadingbanner').length).toBeTruthy();
+				thisView.onCollectionError();
+				expect(thisView.$el.children('.loadingbanner').length).toBeFalsy();
+				expect(thisView.$el.children('.offlinebanner').length).toBeTruthy();
+			});
 		});
 	});
 });
