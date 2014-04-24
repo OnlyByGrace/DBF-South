@@ -75,7 +75,7 @@ var CachingCollectionView = Backbone.View.extend({
 			throw "No collection specified";
 		}
 		
-		this.collection = new this.collection();
+		this.collection = new this.collection({name:this.displayName});
 		
 		if (opts) {
 			if (opts.displayName) {
