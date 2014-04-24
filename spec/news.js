@@ -136,6 +136,14 @@ describe("News Section", function () {
 			});
 		});
 		
+		describe("adding", function () {
+			it("should add items with via news model", function () {
+				var thisModel = {title: "test"};
+				thisCollection.add(thisModel);
+				expect(thisCollection.at(0).attributes.date).toBe('');
+			});
+		});
+		
 		describe("loading", function () {
 			it("if collection is not empty, do not load cache", function () {
 				var thisModel = new NewsModel({title: "Test", content: "This is a test"});
@@ -222,40 +230,6 @@ describe("News Section", function () {
 				runs(function () {
 					expect(called).toBe(true);
 				});
-			});
-		});
-		
-		describe("saving cache", function () {
-			it("should save to the cache when a news item is added to the collection", function () {
-				var thisModel = new NewsModel({title: "SaveTest5", content: "This is a test", id: "save-test"});
-				
-				runs(function () {
-					spyOn(thisCollection,"save").andCallThrough();
-					thisCollection.add(thisModel);
-				});
-				
-				waitsFor(function () {
-					return true;
-				},"save should be called when we add a model",500);
-				
-				runs(function () {
-					var domStorage = window.localStorage.getItem("newsCache");
-					domStorage = JSON.parse(domStorage);
-					expect(domStorage[0]).toEqual(thisModel.attributes);
-					window.localStorage.removeItem("newsCache");
-				});
-			});
-			
-			it("should save to the cache when a news item is removed from the collection", function () {
-				var thisModel = new NewsModel({title: "RemoveTest", content: "This is a test", id: "remove-test"});
-				
-				thisCollection.set(thisModel);
-				thisModel.destroy();
-				
-				var domStorage = window.localStorage.getItem("newsCache");
-				domStorage = JSON.parse(domStorage);
-				expect(domStorage).toEqual([]);
-				window.localStorage.removeItem("newsCache");
 			});
 		});
 	});

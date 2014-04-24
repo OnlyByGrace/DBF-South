@@ -33,71 +33,25 @@ var NewsModelView = Backbone.View.extend({
 	}
 });
 
-var NewsCollection = Backbone.Collection.extend({
+var NewsCollection = CachingCollection.extend({
 	model: NewsModel,
-	lastUpdate: null,
-	initialize: function () {
-		_.bindAll(this, 'loadCache','sync','save','complete','fetch');
-		
-		this.listenTo(this,"add",this.save);
-		this.listenTo(this,"remove", this.save);
-	},
-	
-	loadCache: function () {
-		var tempCollection = window.localStorage.getItem("newsCache");
-		tempCollection = JSON.parse(tempCollection);
-		this.set(tempCollection);
-	},
-	
-	loadLive: function (options) {	
-		$.ajax({ context: this,
-			type: 'GET',
-			url: 'http://dbfsouth.org/?option=com_content&view=category&id=35&format=feed',
-			cache: false})
-			.fail(function () {
-				options.error();
-			})
-			.done(function (data) {
-				this.complete(data);
-				options.success();
-			});
-			
-	},
-	
+	name: "news",
+	url: "http://dbfsouth.org/?option=com_content&view=category&id=35&format=feed",
 	complete: function (data) {
-        var self = this;
-        $(data).find("item").each(function () { // or "item" or whatever suits your feed
-            var el = $(this);
-            var description = $('<div/>').html(el.find("description").text()).text();
+		var self = this;
+		$(data).find("item").each(function () { // or "item" or whatever suits your feed
+			var el = $(this);
+			var description = $('<div/>').html(el.find("description").text()).text();
 			var thisDate = new Date(Date.parse(el.find("pubDate").text()));
-            var elData = {
+			var elData = {
 				title: el.find("title").text(),
 				text: description,
-				date: thisDate.toLocaleDateString(),
+				//date: thisDate.toLocaleDateString(),
 				id: el.find("guid").text()
 			};
-            //console.log(JSON.stringify(elData));
-			self.set(new NewsModel(elData), {remove: false});
-        });
-		//console.log(this.toJSON());
+			self.set(elData, {remove: false});
+		});
 		this.lastUpdate = new Date().toLocaleTimeString();
-	},
-	
-	sync: function (method, collection, options) {
-		if (this.length === 0) {
-			this.loadCache();
-		}
-		if (app.online) {
-			this.loadLive(options);
-		} else {
-			if (options) {
-				options.error();
-			}
-		}
-	},
-	
-	save: function () {
-		window.localStorage.setItem("newsCache",JSON.stringify(this));
 	}
 });
 

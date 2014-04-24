@@ -20,6 +20,17 @@ describe("Caching Collection",function () {
 	});
 	
 	describe("fetch", function () {
+		it("should throw an exception of no name is set", function () {
+			var errorThrown = false;
+			delete thisCollection.name;
+			try {
+				thisCollection.fetch();
+			} catch (err) {
+				errorThrown = true;
+			}
+			expect(errorThrown).toBe(true);
+		});
+	
 		it("should load cache first", function () {
 			var thisModel = {title: "Testing"};
 			window.localStorage.setItem("baseCache",JSON.stringify(thisModel));
@@ -70,6 +81,29 @@ describe("Caching Collection",function () {
 			}
 			runs(function () {
 				app.online = false;
+				thisCollection.fetch(options);
+			});
+			
+			waitsFor(function () {
+				return (called);
+			},"error callback should be fired", 500);
+			
+			runs(function () {
+				expect(called).toBe(true);
+			});			
+		});
+		
+		it("should call error callback if no url is specified", function () {
+			var called = false;
+			var options = {
+				error: function () {
+					called = true;
+				}
+			}
+			runs(function () {
+				spyOn(thisCollection,'loadLive');
+				delete thisCollection.url;
+				app.online = true;
 				thisCollection.fetch(options);
 			});
 			

@@ -7,6 +7,7 @@ var CachingCollection = Backbone.Collection.extend({
 		this.init();
 	},
 	
+	/* Can be overwritten by an inheriting class */
 	init: function () {
 	},
 	
@@ -33,12 +34,19 @@ var CachingCollection = Backbone.Collection.extend({
 	success: function () {
 	},
 	
+	complete: function () {
+	},
+	
 	sync: function (method, collection, options) {
+		if (!this.name) {
+			throw "No name defined for this generic collection";
+		}
+		
 		if (this.length === 0) {
 			this.loadCache();
 		}
 		
-		if (app.online == true) {
+		if ((app.online == true) && this.url) {
 			this.loadLive(options);
 		} else {
 			options.error();
