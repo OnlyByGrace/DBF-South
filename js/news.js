@@ -110,7 +110,10 @@ var NewsCollectionView = Backbone.View.extend({
 		} else {
 			this.displayName = "news";
 		}
-		this.setElement(app.register(this.displayName,"images/glyphicons_045_calendar.png"));
+		var tempEl = app.register(this.displayName,"images/glyphicons_045_calendar.png");
+		$(tempEl).append("<div class='scroller'></div>");
+		this.setElement($(tempEl).children('.scroller')[0]);
+		this.scroller = new IScroll("#"+$(tempEl).attr('id'));
 		
 		this.collection = new NewsCollection();
 		this.collection.on("add",this.itemAdded);
@@ -123,14 +126,15 @@ var NewsCollectionView = Backbone.View.extend({
 	itemAdded: function (newModel) {
 		var newView = new NewsModelView({model: newModel});
 		this.$el.append(newView.render());
+		this.scroller.refresh();
 	},
 	
 	render: function () {
-		this.$el.append("<h6>News</h6>");
+		this.$el.prepend("<h6>News</h6>");
 	},
 	
 	deviceReady: function () {
-		this.$el.prepend("<div class='loadingbanner'>Loading...</div>");
+		this.$el.prepend("<div class='loadingbanner' style='width:"+this.$el.css("width")+"'>Loading...</div>");
 		this.collection.fetch({success: this.collectionLoaded, error: this.collectionError});
 	},
 	
@@ -140,6 +144,9 @@ var NewsCollectionView = Backbone.View.extend({
 	
 	collectionError: function () {
 		this.$el.children('.loadingbanner').remove();
-		this.$el.prepend("<div class='offlinebanner'>Last updated "+this.collection.lastUpdate+"</div>");
+		this.$el.prepend("<div class='offlinebanner' style='width:"+this.$el.css("width")+"'>Last updated "+this.collection.lastUpdate+"</div>");
+		if (this.collection.lastUpdate == null) {
+			this.$el.children('.offlinebanner').text("No connection");
+		}
 	}
 });

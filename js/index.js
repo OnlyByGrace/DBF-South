@@ -97,7 +97,7 @@ var app = {
 			}
 		}
 		
-		return true;
+		return false;
 	},
 	
 	offlineFunc: function () {

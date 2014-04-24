@@ -289,12 +289,16 @@ describe("News Section", function () {
 			});
 			
 			it("should register with the app to get a DOM element", function () {
-				expect(thisCollection.$el.selector).toBe("#newsScreen");
+				expect(thisCollection.$el.hasClass('scroller')).toBe(true);
+			});
+			
+			it("should add a scroller element and initialize scroller", function () {
+				expect(thisCollection.scroller).toBeTruthy();
 			});
 			
 			it("should render", function () {
 				expect(thisCollection.$el.html()).toBeTruthy();
-				expect(thisCollection.$el.hasClass("wrapper")).toBe(true);
+				expect(thisCollection.$el.hasClass("scroller")).toBe(true);
 			});
 		});
 		
@@ -359,6 +363,13 @@ describe("News Section", function () {
 				var thisModel = new NewsModel({title: "Test", content: "This is a test"});
 				thisCollection.collection.add(thisModel);
 				expect(thisCollection.$el.append).toHaveBeenCalled();
+			});
+			
+			it("should refresh the scroller", function() {
+				spyOn(thisCollection.scroller,'refresh');
+				var thisModel = new NewsModel({title: "Test", content: "This is a test"});
+				thisCollection.collection.add(thisModel);
+				expect(thisCollection.scroller.refresh).toHaveBeenCalled();
 			});
 		});
 	});

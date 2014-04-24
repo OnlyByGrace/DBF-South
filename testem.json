@@ -1,14 +1,16 @@
 {
 	"framework":"jasmine",
 	"src_files": [
-		"js/jquery-2.1.0.min.js",
-		"js/underscore-min.js",
-		"js/backbone-min.js",
-		"js/handlebars-v1.3.0.js",
-		"js/iscroll.js",
+		"lib/jquery-2.1.0.min.js",
+		"lib/underscore-min.js",
+		"lib/backbone-min.js",
+		"lib/handlebars-v1.3.0.js",
+		"lib/iscroll.js",
 		"js/index.js",
 		"spec/index.js",
 		"js/news.js",
-		"spec/news.js"
+		"spec/news.js",
+		"js/sermons.js",
+		"spec/sermons.js"
 	]
 }

@@ -4,11 +4,11 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-    <script src="js/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="js/iscroll.js"></script>
-    <script src="js/underscore-min.js"></script>
-    <script src="js/backbone-min.js"></script>
-    <script src="js/handlebars-v1.3.0.js"></script>
+    <script src="lib/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="lib/iscroll.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/backbone-min.js"></script>
+    <script src="lib/handlebars-v1.3.0.js"></script>
 
     <script id="news-template" type="text/x-handlebars-template">
         <div id="newsWrapper" class="wrapper">
@@ -75,7 +75,7 @@
 
     <script src="js/index.js"></script>
     <script src="js/news.js"></script>
-    <!-- <script src="js/sermons.js"></script> -->
+    <script src="js/sermons.js"></script>
     <!-- <script src="js/downloads.js"></script> -->
 
     <script type="text/javascript">
@@ -131,6 +131,8 @@
         document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 		
 		//setTimeout(function () {$(document).trigger('deviceready')}, 3000);
+		
+		//$(document).trigger('deviceready');
 		
         var newsView = new NewsCollectionView({displayName: "news"});
 		var newsView1 = new NewsCollectionView({displayName: "news1"});
