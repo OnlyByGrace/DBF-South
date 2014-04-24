@@ -32,11 +32,11 @@
         {{title}}<br />
         {{description}} - {{author}}    
         <!--<div class="sermon-links">-->
-            <div class="playLink"></div>
+            <!-- <div class="playLink"></div> -->
             {{#if downloaded}}
-                <div class="downloadedLink"></div>
+                <!-- <div class="downloadedLink"></div> -->
             {{else}}
-                <<div class="downloadLink"></div>
+                <!-- <<div class="downloadLink"></div> -->
             {{/if}}
         <!--</div>-->
         <!--<div class="bottomDownloadedLink"></div>
@@ -138,7 +138,7 @@
 		//$(document).trigger('deviceready');
 		
         var newsView = new NewsCollectionView({displayName: "News"});
-		var newsView1 = new NewsCollectionView({displayName: "News1"});
+		var sermonsView = new SermonCollectionView();
 		var newsView2 = new NewsCollectionView({displayName: "News2"});
 		var newsView3 = new NewsCollectionView({displayName: "News3"});
 		if (!Backbone.History.started) {

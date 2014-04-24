@@ -115,7 +115,7 @@ var app = {
 			this.router.route(thisName,thisName);
 			$('#horizontalScroller').append("<div id='"+thisName+"Screen' class='wrapper'></div>");
 			$('#horizontalScroller').css("width",(this.screens.length*100)+"%");
-			$('#scrollIndicator').parent().prepend("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
+			$('#scrollIndicator').before("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
 			
 			$('div.wrapper').css("width",(100/this.screens.length)+"%");
 			console.log((100/this.screens.length)+"%");

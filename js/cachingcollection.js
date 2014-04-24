@@ -128,6 +128,6 @@ var CachingCollectionView = Backbone.View.extend({
 	initializeScroller: function (tempEl) {
 		$(tempEl).append("<div class='scroller'></div>");
 		this.setElement($(tempEl).children()[0]);
-		this.scroller = new IScroll(tempEl);
+		this.scroller = new IScroll(tempEl,{tap: true});
 	}
 });

@@ -9,7 +9,7 @@ describe("Template Model View", function () {
 
 	describe("initialize", function () {
 		it("should create a template from the template parameter", function () {
-			var thisView = new TemplateModelView({template: '#test-template'});
+			var thisView = new TemplateModelView({template: 'test-template'});
 			expect(thisView.template).toBeTruthy();
 		});
 		
@@ -30,7 +30,7 @@ describe("Template Model View", function () {
 	
 	describe("render", function () {
 		it("should return the element", function () {
-			var thisView = new TemplateModelView({model:new Backbone.Model({title: "test"}),template: '#test-template'});
+			var thisView = new TemplateModelView({model:new Backbone.Model({title: "test"}),template: 'test-template'});
 			var response = thisView.render();
 			expect(response.innerHTML).toBe("<h5>test</h5>");
 		});
@@ -39,7 +39,7 @@ describe("Template Model View", function () {
 	describe("unrender", function () {
 		it("should remove the dom element when the model is destroyed", function () {
 			var thisModel = new Backbone.Model({title: "test"});
-			var thisView = new TemplateModelView({model: thisModel, template: '#test-template',className:'news-item'});
+			var thisView = new TemplateModelView({model: thisModel, template: 'test-template',className:'news-item'});
 			$('#test-template').append(thisView.render());
 			expect($('#test-template').children().length).toBe(2);
 			thisModel.destroy();
