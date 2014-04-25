@@ -51,7 +51,7 @@ var CachingCollection = Backbone.Collection.extend({
 		}
 		
 		if (this.length === 0) {
-			console.log("loading cache");
+			//console.log("loading cache");
 			this.loadCache();
 		}
 		
@@ -71,8 +71,11 @@ var CachingCollectionView = Backbone.View.extend({
 	el: '',
 	displayName: '',
 	icon: '',
+	events: {
+		'scroll': 'onScroll'
+	},
 	initialize: function (opts) {
-		_.bindAll(this, 'itemAdded', 'refresh', 'onDeviceReady', 'onCollectionLoaded', 'onCollectionError');
+		_.bindAll(this, 'itemAdded', 'refresh', 'onDeviceReady', 'onCollectionLoaded', 'onCollectionError','onScroll');
 	
 		if (!this.collection) {
 			throw "No collection specified";
@@ -104,7 +107,7 @@ var CachingCollectionView = Backbone.View.extend({
 	},
 	
 	refresh: function () {
-		this.scroller.refresh();
+		//this.scroller.refresh();
 	},
 	
 	onDeviceReady: function () {
@@ -125,12 +128,26 @@ var CachingCollectionView = Backbone.View.extend({
 	},
 	
 	render: function () {
-		this.$el.html("<h6>"+this.displayName+"</h6>");
+		this.$el.html("<div style='height:100px'></div><h6>"+this.displayName+"</h6>");
+		var that = this;
+		setTimeout(function () { that.el.scrollTop = 100},250);
 	},
 	
 	initializeScroller: function (tempEl) {
-		$(tempEl).append("<div class='scroller'></div>");
-		this.setElement($(tempEl).children()[0]);
-		this.scroller = new IScroll(tempEl);
+		//$(tempEl).append("<div class='scroller'></div>");
+		
+		//$(tempEl).prepend("<div style='height:100px'></div>");
+		this.setElement($(tempEl));
+		//this.scroller = new IScroll(tempEl);
+	},
+	
+	onScroll: function () {
+		//console.log(this.displayName);
+		if (this.el.scrollTop < 100) {
+			var that = this;
+			setTimeout(function () { that.el.scrollTop = 100},10);
+			//this.$el.animate({scrollTop: 100},500);
+			setTimeout(that.onScroll,150);
+		}
 	}
 });

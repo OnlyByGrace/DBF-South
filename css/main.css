@@ -36,7 +36,7 @@
 
 html
 {
-    -ms-touch-action: none;
+    -ms-touch-action: pan-y;
 }
 
 body, ul, li
@@ -56,7 +56,7 @@ body
 
 #header
 {
-    position: absolute;
+    position: fixed;
     z-index: 2;
     top: 0;
     left: 0;
@@ -69,6 +69,7 @@ body
     font-size: 20px;
     text-align: left;
     font-weight: bold;
+	-ms-touch-action: none;
 }
 
     #header img
@@ -110,6 +111,9 @@ body
     padding: 0;
     border-top: 1px solid #444;
     text-align:center;
+	
+	-ms-scroll-snap-y: mandatory snapList(48px);
+    -ms-overflow-style: none;
 }
 
 #horizontalWrapper
@@ -122,7 +126,8 @@ body
     /*height: 100%;*/
     width: 100%;
     background: #ccc;
-    /*overflow: hidden;*/
+    overflow: hidden;
+	-ms-touch-action: pan-y;
 }
 
 .wrapper
@@ -132,8 +137,10 @@ body
     width: 33.33333%;
     background: #ccc;
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
+	overflow-x: hidden;
     float: left;
+	-ms-touch-action: pan-y;
 }
 
 #wrapper2
@@ -191,6 +198,7 @@ body
     -ms-text-size-adjust: none;
     -o-text-size-adjust: none;
     text-size-adjust: none;*/
+	-ms-touch-action: pan-y;
 }
 
 .scroller ul

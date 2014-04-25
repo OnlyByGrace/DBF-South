@@ -75,7 +75,7 @@ var app = {
             scrollY: false,
             momentum: false,
             snap: true,
-            snapSpeed: 400,
+            snapSpeed: 200,
             //click: true,
             tap: true,
             indicators: {
@@ -118,7 +118,7 @@ var app = {
 			$('#scrollIndicator').before("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
 			
 			$('div.wrapper').css("width",(100/this.screens.length)+"%");
-			console.log((100/this.screens.length)+"%");
+			//console.log((100/this.screens.length)+"%");
 			
 			if (this.scroller) {
 				setTimeout(function () {

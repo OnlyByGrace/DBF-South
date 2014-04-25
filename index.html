@@ -31,12 +31,12 @@
     <script id="sermon-template" type="text/x-handlebars-template">
         <h5>{{title}}</h5>
         {{description}} - {{author}}    
-        <!-- <div class="sermon-links"> -->
-             <!-- <div class="playLink"></div>  -->
+        <div class="sermon-links">
+             <div class="playLink"></div>
             {{#if downloaded}}
-                 <!-- <div class="downloadedLink"></div>  -->
+                 <div class="downloadedLink"></div>
             {{else}}
-                 <!-- <div class="downloadLink"></div>  -->
+                 <div class="downloadLink"></div>
             {{/if}}
         </div>
         <!--<div class="bottomDownloadedLink"></div>
@@ -127,7 +127,24 @@
     //$(document).on('click', function (event) {
     //    //console.log(event.type);
     //});
-    
+    (function watch_events() {
+		var events = [
+			'MSGestureEnd',
+			'MSGestureStart',
+			'MSPointerHover',
+			'MSPointerDown',
+			'MSPointerMove'
+		];
+
+		$.each(events, function (i, val) {
+			// console.log('Binding: ' + val);
+			$(document).bind(val, function (evt) {
+				var msg = evt.type + ' on ' + evt.target.id + ' ' + evt.target.localName;
+				console.log(msg);
+			} );
+		});
+	});
+	
 	
 	app.initialize();
     $(document).ready(function () {
@@ -150,6 +167,8 @@
         //var sermonView = new SermonListView();
     });
 </script>
+
+
 
 <!--<script src="http://jsconsole.com/remote.js?D55B5F65-1246-435B-952D-FEF9587DDC8A"></script>-->
 </body>
