@@ -114,7 +114,7 @@ var app = {
 	checkConnection: function () {
 		if (navigator.connection) {
 			var networkState = navigator.connection.type;
-			if (networkState == Connection.NONE) {
+			if (networkState == navigator.connection.NONE) {
 				return false;
 			} else {
 				return true;
