@@ -106,7 +106,7 @@ var app = {
                 el: document.getElementById('scrollIndicator'),
                 resize: false
             }
-        });
+        }); 
 		
 		app.trigger('deviceready');
     },
