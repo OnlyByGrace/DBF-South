@@ -141,6 +141,7 @@ body
 	overflow-x: hidden;
     float: left;
 	-ms-touch-action: pan-y;
+	-webkit-overflow-scrolling: touch;
 }
 
 #wrapper2
