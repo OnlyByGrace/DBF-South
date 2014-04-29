@@ -9,6 +9,7 @@
     <script src="lib/underscore-min.js"></script>
     <script src="lib/backbone-min.js"></script>
     <script src="lib/handlebars-v1.3.0.js"></script>
+	<script src="lib/hammer.min.js"></script>
 
     <script id="news-template" type="text/x-handlebars-template">
         <div id="newsWrapper" class="wrapper">
@@ -31,14 +32,14 @@
     <script id="sermon-template" type="text/x-handlebars-template">
         <h5>{{title}}</h5>
         {{description}} - {{author}}    
-        <div class="sermon-links">
-             <div class="playLink"></div>
+        <!-- <div class="sermon-links"> -->
+             <!-- <div class="playLink"></div> -->
             {{#if downloaded}}
-                 <div class="downloadedLink"></div>
+                 <!-- <div class="downloadedLink"></div> -->
             {{else}}
-                 <div class="downloadLink"></div>
+                 <!-- <div class="downloadLink"></div> -->
             {{/if}}
-        </div>
+        <!-- </div> -->
         <!--<div class="bottomDownloadedLink"></div>
         <div class="bottomPlayLink"></div>-->
     </script>

@@ -36,7 +36,7 @@
 
 html
 {
-    -ms-touch-action: pan-y;
+	-ms-touch-action: none;
 }
 
 body, ul, li
@@ -48,10 +48,11 @@ body, ul, li
 
 body
 {
-    background: #ccc;
+    background: #FFFFFF;
     font-size: x-large;
     font-family: ubuntu, helvetica, arial;
     overflow-y: hidden; /* this is important to prevent the whole page to bounce */
+	-ms-touch-action: none;
 }
 
 #header
@@ -125,9 +126,9 @@ body
     left: 0;
     /*height: 100%;*/
     width: 100%;
-    background: #ccc;
+    background: #FFFFFF;
     overflow: hidden;
-	-ms-touch-action: pan-y;
+	-ms-touch-action: pan-x;
 }
 
 .wrapper
@@ -135,7 +136,6 @@ body
 	position: relative;
     z-index: 1;
     width: 33.33333%;
-    background: #ccc;
     height: 100%;
     overflow-y: auto;
 	overflow-x: hidden;
@@ -147,7 +147,6 @@ body
 {
     z-index: 1;
     width: 33.333333%;
-    background: #ccc;
     overflow: hidden;
     height: 100%;
     float: left;
@@ -198,7 +197,7 @@ body
     -ms-text-size-adjust: none;
     -o-text-size-adjust: none;
     text-size-adjust: none;*/
-	-ms-touch-action: pan-y;
+	-ms-touch-action: pan-x;
 }
 
 .scroller ul
@@ -230,7 +229,7 @@ body
     margin-bottom: 15px;
     margin-top: 15px;
     min-height: 100px;
-    /*box-shadow: 0px 2px 5px grey;*/
+	/* box-shadow: 0px 2px 5px grey; */
 }
 
     .entry-item h5, .sermon-item h5, .download-item h5
@@ -268,7 +267,7 @@ body
     background-image: url(../images/glyphicons_173_play.png);
     background-position: center center;
     background-repeat: no-repeat;
-    background-color: darkgrey;
+    /* background-color: darkgrey; */
     border-bottom: 1px solid black;
 }
 
@@ -286,7 +285,7 @@ body
     background-image: url(../images/glyphicons_212_down_arrow.png);
     background-position: center center;
     background-repeat: no-repeat;
-    background-color: darkgrey;
+    /* background-color: darkgrey; */
 }
 
 .deleteDownloadLink
@@ -313,7 +312,7 @@ body
     background-image: url(../images/glyphicons_207_remove_2.png);
     background-position: center center;
     background-repeat: no-repeat;
-    background-color: darkgrey;
+    /* background-color: darkgrey; */
 }
 
 .entry-text
@@ -338,6 +337,7 @@ body
     margin-bottom: 15px;
     margin-top: 15px;
     min-height:100px;
+	/* box-shadow: 0px 2px 5px grey; */
 }
 
 .sermon-text, .download-text

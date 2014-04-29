@@ -58,7 +58,9 @@ var CachingCollection = Backbone.Collection.extend({
 		if ((app.online == true) && this.url) {
 			this.loadLive(options);
 		} else {
-			options.errorCallback();
+			if (options.errorCallback) {
+				options.errorCallback();
+			}
 		}
 	},
 	
@@ -75,7 +77,7 @@ var CachingCollectionView = Backbone.View.extend({
 		'scroll': 'onScroll'
 	},
 	initialize: function (opts) {
-		_.bindAll(this, 'itemAdded', 'refresh', 'onDeviceReady', 'onCollectionLoaded', 'onCollectionError','onScroll');
+		_.bindAll(this, 'itemAdded', 'refresh', 'onDeviceReady', 'onCollectionLoaded', 'onCollectionError','onScroll','initializeScroller');
 	
 		if (!this.collection) {
 			throw "No collection specified";
@@ -94,6 +96,7 @@ var CachingCollectionView = Backbone.View.extend({
 		this.collection = new this.collection([],{name:this.displayName});
 		
 		var tempEl = app.register(this.displayName,this.icon);
+		console.log(tempEl);
 		this.initializeScroller(tempEl);
 		
 		this.listenTo(this.collection,"add",this.itemAdded);
@@ -138,6 +141,7 @@ var CachingCollectionView = Backbone.View.extend({
 		
 		//$(tempEl).prepend("<div style='height:100px'></div>");
 		this.setElement($(tempEl));
+		console.log(this.$el);
 		//this.scroller = new IScroll(tempEl);
 	},
 	

@@ -6,6 +6,7 @@
 		"lib/backbone-min.js",
 		"lib/handlebars-v1.3.0.js",
 		"lib/iscroll.js",
+		"lib/hammer.min.js",
 		"js/index.js",
 		"spec/index.js",
 		"js/templates.js",

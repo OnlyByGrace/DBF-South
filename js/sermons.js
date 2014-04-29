@@ -14,7 +14,7 @@ var SermonModelView = TemplateModelView.extend({
 	template: 'sermon-template',
 	
 	onTap: function () {
-		alert("yeah");
+		
 	}
 });
 

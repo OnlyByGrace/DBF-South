@@ -35,8 +35,32 @@ var ScreenModelCollection = Backbone.Collection.extend({
 	model: ScreenModel
 });
 
-var AppRouter = Backbone.Router.extend({
+var ScreenCollectionView = Backbone.View.extend({
+	el: '#outerWrapper',
+	initialize: function () {
+		_.bindAll(this,'add','next','prev','goTo');
+	
+		this.collection = new ScreenModelCollection();
+		this.currentScreen = 0;
+	},
+	
+	add: function (model) {
+		this.collection.add(model);
+	},
+	
+	next: function () {
+		
+	},
+	
+	prev: function () {
+	},
+	
+	goTo: function (screen) {
+	}	
+});
 
+var AppRouter = Backbone.Router.extend({
+	
 });
  
 var app = {
@@ -76,7 +100,7 @@ var app = {
             momentum: false,
             snap: true,
             snapSpeed: 200,
-            //click: true,
+            // click: true,
             tap: true,
             indicators: {
                 el: document.getElementById('scrollIndicator'),

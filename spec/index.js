@@ -189,3 +189,13 @@ describe("app", function () {
 		//it should add an icon in the header bar
 	});
 });
+
+// describe("ScreenCollectionViewer", function () {
+	// it("should be bound to #horizontalWrapper", function () {
+		// var thisView = new ScreenCollectionView();
+		// expect(thisView.el).toBe("#horizontalWrapper");
+	// });
+	
+	// it("should have an add function", function () {
+	// });
+// });
