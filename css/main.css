@@ -134,14 +134,14 @@ body
 .wrapper
 {
 	position: relative;
-    z-index: 1;
+    top: 0px;
+    z-index: 0;
     width: 33.33333%;
     height: 100%;
-    overflow-y: auto;
-	overflow-x: hidden;
+    overflow: scroll;
     float: left;
 	-ms-touch-action: pan-y;
-	-webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
 }
 
 #wrapper2
