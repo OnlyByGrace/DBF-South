@@ -127,7 +127,7 @@ body
     /*height: 100%;*/
     width: 100%;
     background: #FFFFFF;
-    overflow: hidden;
+    overflow: auto;
 	-ms-touch-action: pan-x;
 }
 
@@ -199,6 +199,8 @@ body
     -o-text-size-adjust: none;
     text-size-adjust: none;*/
 	-ms-touch-action: pan-x;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .scroller ul
