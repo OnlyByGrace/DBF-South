@@ -7,8 +7,9 @@
     <author email="programmerbygrace@gmail.com" href="http://dbfsouth.org">
         Luke Bennett
     </author>
+	
+    <gap:plugin name="org.apache.cordova.network-information" />
+	
     <content src="index.html" />
     <access origin="*" />
-	
-	<gap:plugin name="org.apache.cordova.network-information" />
 </widget>
