@@ -184,11 +184,10 @@ describe("CachingCollection View", function () {
 		});
 		
 		it("should register with app with displayName", function() {
-			
 			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test", icon: ""});
 			expect(app.register).toHaveBeenCalledWith("Test",thisView.icon);
 		});
-		
+        
 		//REMOVED iSCROLL
 		// it("should setup the scroller", function () {
 			// var thisView = new CachingCollectionView({collection: NewsCollection});

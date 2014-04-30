@@ -11,6 +11,13 @@
     <script src="lib/handlebars-v1.3.0.js"></script>
 	<script src="lib/hammer.min.js"></script>
 
+    <script id="sermon-popup-template" type="text/x-handlebars-template"> 
+        <div class="sermonPopupContent"> 
+            <h3>{{title}}</h3><br />
+            {{description}}<br />{{speaker}}<br />{{date}}<br />{{length}}
+        </div>
+    </script>
+    
     <script id="news-template" type="text/x-handlebars-template">
         <div id="newsWrapper" class="wrapper">
             <div id="newsScroller" class="scroller">

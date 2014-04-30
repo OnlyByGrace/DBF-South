@@ -30,7 +30,9 @@ var CachingCollection = Backbone.Collection.extend({
 			url: this.url,
 			cache: false})
 			.fail(function () {
-				options.errorCallback();
+                if (options.errorCallback) {
+                    options.errorCallback();
+                }
 			})
 			.done(function (data) {
 				this.complete(data);
@@ -101,9 +103,15 @@ var CachingCollectionView = Backbone.View.extend({
 		
 		this.listenTo(this.collection,"add",this.itemAdded);
 		this.listenTo(app,"deviceready",this.onDeviceReady);
+        
+        this.init();
 		
 		this.render();
 	},
+    
+    /* Shoudl be overwritten */
+    init: function () {
+    },
 	
 	/* Should be overwritten */
 	itemAdded: function () {

@@ -395,3 +395,23 @@ body
 .offlinebanner {
 	background-color: grey;
 }
+
+
+
+.sermonPopup {
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(50,50,50,0.5);
+    z-index: 3;
+}
+
+.sermonPopupContent {
+    position: absolute;
+    top: 25%;
+    height: 50%;
+    background-color: #cccccc;
+    width: 100%;
+}

@@ -60,7 +60,9 @@ var ScreenCollectionView = Backbone.View.extend({
 });
 
 var AppRouter = Backbone.Router.extend({
-	
+	routes: {
+        '' : 'home'
+    }
 });
  
 var app = {
