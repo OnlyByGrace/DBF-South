@@ -107,7 +107,8 @@ var app = {
             indicators: {
                 el: document.getElementById('scrollIndicator'),
                 resize: false
-            }
+            },
+            eventPassthrough: true
         }); 
 		
 		app.trigger('deviceready');
