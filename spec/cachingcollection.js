@@ -183,10 +183,10 @@ describe("CachingCollection View", function () {
 			expect(error).toBe(true);
 		});
 		
-		it("should register with app with displayName", function() {
-			var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test", icon: ""});
-			expect(app.register).toHaveBeenCalledWith("Test",thisView.icon);
-		});
+		// it("should register with app with displayName", function() {
+			// var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test", icon: ""});
+			// expect(app.register).toHaveBeenCalledWith("Test",thisView.icon);
+		// });
         
 		//REMOVED iSCROLL
 		// it("should setup the scroller", function () {
@@ -200,7 +200,12 @@ describe("CachingCollection View", function () {
 		});
 	});
 	
-	
+	describe("render", function () {
+        it("should return the element", function () {
+            var thisView = new CachingCollectionView({collection: NewsCollection, displayName: "Test"});
+            expect(thisView.render()).toBeTruthy();
+        });
+    });
 	//REMOVED iSCROLL
 	// describe("refresh", function () {
 		// it("should refresh the scroller", function () {

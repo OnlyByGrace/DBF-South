@@ -6,6 +6,16 @@ describe("ScreenModel", function () {
 });
 
 describe("app", function () {
+    beforeEach(function () {
+        $('body').append("<div id='stage'></div>");
+		var el = $('#stage');
+		el.append("<div id='scrollIndicator'><div id='headerIcons'></div></div><div id='horizontalWrapper'><div></div></div>");
+    });
+
+    afterEach(function () {
+        $('#stage').remove();
+    });
+
 	describe('initialize', function() {
         // it('should bind deviceready', function() {
             // runs(function() {
@@ -27,11 +37,6 @@ describe("app", function () {
 			app.initialize();
 			expect(app.trigger).toBeDefined();
 		});
-		
-		it('should create a new ScreenModelCollection', function () {
-			app.initialize();
-			expect(app.screens).toEqual(jasmine.any(ScreenModelCollection));
-		})
 		
 		it('should initialize the router', function () {
 			app.initialize();
@@ -61,6 +66,11 @@ describe("app", function () {
 			expect(app.trigger).toHaveBeenCalledWith('deviceready');
 			//app.scroller.destroy();
         });
+        
+        it('should create a new ScreenCollectionView', function () {
+			app.onDeviceReady();
+			expect(app.screens).toEqual(jasmine.any(ScreenCollectionView));
+		});
 		
 		describe('should set the app connection state', function () {
 			it("to online if there is a connection", function () {
@@ -124,78 +134,28 @@ describe("app", function () {
 	});
 
 	describe('register', function () {
-		beforeEach(function() {
-			window.Connection = { NONE : 0, ELSE : 1};
-			navigator.connection = {};
-			navigator.connection.type = Connection.NONE;
-			$('body').append("<div id='stage'></div>");
-			var el = $('#stage');
-			el.append("<div id='scrollIndicator'><div></div></div><div id='horizontalWrapper'><div id='horizontalScroller'></div></div>");
+		it("should call screens.add", function () {
+            spyOn(app.screens,'add');
+            app.register("test","test.png");
+            expect(app.screens.add).toHaveBeenCalled();
         });
-		
-		afterEach(function() {
-			$('#stage').remove();
-			window.Connection = null;
-			navigator.connection = null;
-		});
-	
-		it('should create a new app screen model', function () {
-			app.initialize();
-			app.onDeviceReady();
-			app.register("news","images/calendar.png");
-			expect(app.screens.at(0).attributes).toEqual(new ScreenModel({name:"news",icon:'images/calendar.png'}).attributes);
-		});
-		
-		it('should add a route to the rounter', function () {
-			var called = false;
-			//expect(app.router.routes["news"]).toBeDefined();
-			runs(function () {
-				app.initialize();
-				app.onDeviceReady();
-				app.register("news","images/calendar.png");
-				app.router.on('route:news', function () {
-					//console.log("test");
-					called = true;
-				});
-				if (!Backbone.History.started) {
-					Backbone.history.start();
-				}
-				
-				app.router.navigate("news");
-			});
-			
-			waitsFor(function () {
-				return (called == true);
-			}, "route callback should be fired", 500);
-			
-			runs(function () {
-				expect(called).toBe(true);
-			});
-		});
-		
-		it('should return a dom element', function () {
-			app.initialize();
-			app.onDeviceReady();
-			var test = app.register('news','images/calendar.png');
-			expect(test).toBe('#newsScreen');
-		});
-		
-		it('should resize and refresh the horizontal scroller', function () {	
-			app.initialize();
-			app.onDeviceReady();
-			var test = app.register('news','images/calendar.png');
-			expect($('#horizontalScroller').css("width")).toBe($('body').css("width"));
-		});
-		
-		//it should add an icon in the header bar
 	});
 });
 
 describe("ScreenCollectionViewer", function () {
+    var controller = {
+        called: 0,
+        render: function () {
+            this.called++;
+        }
+    };
+
     beforeEach(function () {
+        controller.called = 0;
+    
         $('body').append("<div id='stage'></div>");
 		var el = $('#stage');
-		el.append("<div id='scrollIndicator'><div id='headerIcons'></div></div><div id='horizontalWrapper'><div></div></div>");
+		el.append("<div id='scrollIndicator'><div id='headerIcons'></div></div><div id='horizontalWrapper'></div>");
     });
 
     afterEach(function () {
@@ -228,41 +188,10 @@ describe("ScreenCollectionViewer", function () {
             expect(thisView.collection.at(0).get("name")).toBe("test");
         });
         
-        it("should add an icon to the iconTray", function () {
-            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
-            expect($(thisView.iconTray).children('a').length).toBe(0);
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            console.log($(thisView.iconTray).html());
-            expect($(thisView.iconTray).children('a').length).toBe(1);
-        });
-        
-        it("should add an element to child 1", function () {
-            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
-            expect($(thisView.$el.children()[0]).children().length).toBe(0);
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            expect($(thisView.$el.children()[0]).children().length).toBe(1);
-        });
-        
-        it("should expand the width of child 1", function () {
-            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
-            var firstWidth = $(thisView.$el.children(":first")).width();
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            thisView.add(new ScreenModel({name: "test2", icon: "test.png"}));
-            expect(firstWidth).toBeLessThan($(thisView.$el.children(":first")).width());
-        });
-        
-        it("should update screen widths", function () {
-            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            var firstWidth = $(".wrapper:first").width();
-            thisView.add(new ScreenModel({name: "test2", icon: "test.png"}));
-            expect(firstWidth).toBe($(".wrapper:first").width());
-        });
-        
         it("should return the element id", function () {
             var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
             var returnVal = thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            expect(returnVal).toBe("#testScreen");
+            expect(returnVal).toBe("testScreen");
         });
         
         it("should not permit duplicates", function () {
@@ -273,12 +202,48 @@ describe("ScreenCollectionViewer", function () {
         });
     });
     
+    describe('render', function () {
+        it("should call all children windows render", function () {
+            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
+            
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.add(new ScreenModel({name: "test1", icon: "test.png", view: controller}));
+            
+            thisView.render();
+            
+            expect(controller.called).toBe(2);
+        });
+        
+        it("should add an icon to the iconTray", function () {
+            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
+            expect($(thisView.iconTray).children('a').length).toBe(0);
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.render();
+            expect($(thisView.iconTray).children('a').length).toBe(1);
+        });
+        
+        it("should update screen widths", function () {
+            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            var firstWidth = $(".wrapper:first").width();
+            thisView.add(new ScreenModel({name: "test2", icon: "test.png", view: controller}));
+            expect(firstWidth).toBe($(".wrapper:first").width());
+        });
+        
+        it("should add an element to the DOM", function () {
+            var thisView = new ScreenCollectionView({iconTray: "#headerIcons"});
+            thisView.render();
+            expect($('#horizontalWrapper').children().length).toBe(1);
+        });
+    });
+    
     describe('next',function () {
         it("should call goTo with the next element", function () {
             var thisView = new ScreenCollectionView({iconTray: "#headerIcons", scrollEl: "#scrollIndicator"});
             spyOn(thisView, 'goTo');
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            thisView.add(new ScreenModel({name: "test1", icon: "test.png"}));
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.add(new ScreenModel({name: "test1", icon: "test.png", view: controller}));
+            thisView.render();
             thisView.next();
             expect(thisView.goTo).toHaveBeenCalledWith(1);
         });
@@ -286,7 +251,8 @@ describe("ScreenCollectionViewer", function () {
         it("should not call goTo if last screen displayed", function () {
             var thisView = new ScreenCollectionView({iconTray: "#headerIcons", scrollEl: "#scrollIndicator"});
             spyOn(thisView, 'goTo');
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.render();
             thisView.next();
             expect(thisView.goTo).not.toHaveBeenCalled();
         });
@@ -296,8 +262,9 @@ describe("ScreenCollectionViewer", function () {
         it("should call goTo with the prev element", function () {
             var thisView = new ScreenCollectionView({iconTray: "#headerIcons", scrollEl: "#scrollIndicator"});
             spyOn(thisView, 'goTo').andCallThrough();
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            thisView.add(new ScreenModel({name: "test1", icon: "test.png"}));
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.add(new ScreenModel({name: "test1", icon: "test.png", view: controller}));
+            thisView.render();
             thisView.next();
             thisView.prev();
             expect(thisView.goTo).toHaveBeenCalledWith(0);
@@ -306,7 +273,8 @@ describe("ScreenCollectionViewer", function () {
         it("should not call goTo if last screen displayed", function () {
             var thisView = new ScreenCollectionView({iconTray: "#headerIcons", scrollEl: "#scrollIndicator"});
             spyOn(thisView, 'goTo');
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.render();
             thisView.prev();
             expect(thisView.goTo).not.toHaveBeenCalled();
         });
@@ -315,8 +283,9 @@ describe("ScreenCollectionViewer", function () {
     describe('goTo', function () {
         it("should set el.scrollLeft to the left of # screen", function () {
             var thisView = new ScreenCollectionView({iconTray: "#headerIcons", scrollEl: "#scrollIndicator"});
-            thisView.add(new ScreenModel({name: "test", icon: "test.png"}));
-            thisView.add(new ScreenModel({name: "test1", icon: "test.png"}));
+            thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
+            thisView.add(new ScreenModel({name: "test1", icon: "test.png", view: controller}));
+            thisView.render();
             spyOn(thisView.$el,'scrollLeft');
             $("#test1Screen").css("position","absolute");
             thisView.goTo(1);

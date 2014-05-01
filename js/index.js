@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
  // Backbone.sync = function (method, model, options) {
     // options.success();
 // }
@@ -24,10 +24,12 @@
 var ScreenModel = Backbone.Model.extend({
     idAttribute: 'name',
 	defaults: {
-		'name':'',
-		'icon':''
+		'name' : '',
+		'icon' : '',
+        'el' : '',
+        'view' : null
 	},
-	
+
 	sync: function () {
 	}
 });
@@ -39,7 +41,7 @@ var ScreenModelCollection = Backbone.Collection.extend({
 var ScreenCollectionView = Backbone.View.extend({
 	el: '#horizontalWrapper',
 	initialize: function (opts) {
-		_.bindAll(this,'add','next','prev','goTo');
+		_.bindAll(this,'add','next','prev','goTo','render');
 	
         if (opts) {
             if (opts.scrollEl) {
@@ -96,14 +98,7 @@ var ScreenCollectionView = Backbone.View.extend({
 	add: function (model) {
         if (!this.collection.findWhere({name: model.get("name")})) {
             this.collection.add(model);
-            $(this.$el.children(":first")).append("<div id='"+encodeURI(model.get("name"))+"Screen' class='wrapper'></div>");
-            $(this.$el.children(":first")).css("width",(this.collection.length*100)+"%");
-            $('div.wrapper').css("width",(100/this.collection.length)+"%");
-            model.set("el","#"+encodeURI(model.get("name")+"Screen"));
-            
-            if (model.get("icon")) {
-                $(this.iconTray).append("<a><img src='"+model.get('icon')+"' /></a>");
-            }
+            model.set("el",encodeURI(model.get("name")+"Screen"));
             
             return model.get("el")
         }
@@ -125,11 +120,28 @@ var ScreenCollectionView = Backbone.View.extend({
 	goTo: function (screen) {
         var thisModel = this.collection.at(screen);
         if (thisModel) {
-            console.log($(thisModel.get("el")).position().left);
-            this.$el.scrollLeft($(thisModel.get("el")).position().left);
+            this.$el.scrollLeft($("#"+thisModel.get("el")).position().left);
             this.currentScreen = screen;
         }
-	}	
+	},
+    
+    render: function () {
+        //Add the screens
+        var thisEl = $('<div id="#horizontalScroller" class="scroller"></div>');
+        var that = this;
+        thisEl.css("width",(this.collection.length*100)+"%");
+        this.collection.each(function (thisModel) {
+            var newEl = $('<div id="'+thisModel.get('el')+'" class="wrapper"></div>').css("width",(100/that.collection.length)+"%");
+            newEl.append(thisModel.get('view').render());
+            thisEl.append(newEl);
+            
+            //Add the icons - need a default icon
+            if (thisModel.get("icon")) {
+                $(that.iconTray).append("<a><img src='"+thisModel.get('icon')+"' /></a>");
+            }
+        });
+        this.$el.append(thisEl);
+    }
 });
 
 var AppRouter = Backbone.Router.extend({
@@ -147,7 +159,6 @@ var app = {
     initialize: function() {
 		_.bindAll(this, 'bindEvents','onDeviceReady','register');
 		_.extend(this,Backbone.Events);
-		this.screens = new ScreenModelCollection();
 		
 		this.router = new AppRouter();
 		
@@ -165,6 +176,8 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        this.screens = new ScreenCollectionView();
+        
 		this.online = this.checkConnection();
 		$(document).on('offline',this.offlineFunc);
 		$(document).on('online',this.onlineFunc);
@@ -207,26 +220,7 @@ var app = {
 		app.online = true;
 	},
 	
-	register: function (thisName, thisIcon) {
-		//thisName must be unique
-		if (!this.screens.findWhere({name:thisName})) {
-			this.screens.add(new ScreenModel({'name': thisName, 'icon': thisIcon}));
-			this.router.route(thisName,thisName);
-			$('#horizontalScroller').append("<div id='"+thisName+"Screen' class='wrapper'></div>");
-			$('#horizontalScroller').css("width",(this.screens.length*100)+"%");
-			$('#scrollIndicator').before("<a href='#"+thisName+"'><img src='"+thisIcon+"' /></a>");
-			
-			$('div.wrapper').css("width",(100/this.screens.length)+"%");
-			//console.log((100/this.screens.length)+"%");
-			
-			// if (this.scroller) {
-				// setTimeout(function () {
-					// app.scroller.refresh();
-				// }, 10);
-			// }
-			
-			return ("#"+thisName+"Screen");
-		}
-		return null;
+	register: function (thisName, thisIcon, thisController) {
+		return this.screens.add(new ScreenModel({'name': thisName, 'icon': thisIcon, 'view' : thisController}));
 	}
 };
