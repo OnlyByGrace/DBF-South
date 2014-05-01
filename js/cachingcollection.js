@@ -138,7 +138,9 @@ var CachingCollectionView = Backbone.View.extend({
 	},
 	
 	render: function () {
-		this.$el.html("<div style='height:100px'></div><h6>"+this.displayName+"</h6>");
+        if (this.$el.html() == "") {
+            this.$el.html("<div style='height:100px'></div><h6>"+this.displayName+"</h6>");
+        }
 		var that = this;
 		setTimeout(function () { that.el.scrollTop = 100},250);
         return this.el;

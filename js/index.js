@@ -41,7 +41,7 @@ var ScreenModelCollection = Backbone.Collection.extend({
 var ScreenCollectionView = Backbone.View.extend({
 	el: '#horizontalWrapper',
 	initialize: function (opts) {
-		_.bindAll(this,'add','next','prev','goTo','render');
+		_.bindAll(this,'add','next','prev','goTo','render','touch','release','swipeLeft','swipeRight','drag');
 	
         if (opts) {
             if (opts.scrollEl) {
@@ -55,6 +55,7 @@ var ScreenCollectionView = Backbone.View.extend({
     
 		this.collection = new ScreenModelCollection();
         this.currentScreen = 0;
+        this.lastPosition = 0;
         
         var options = {
           dragLockToAxis: true,
@@ -69,20 +70,20 @@ var ScreenCollectionView = Backbone.View.extend({
 	},
     
     checkSnap: function () {
-        this.$el.animate({scrollLeft: Math.round(scroller.scrollLeft / el.offsetWidth) *el.offsetWidth},200);
+        this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},200);
     },
     
     drag: function(ev){
         ev.gesture.preventDefault();
-        this.$el.scrollLeft(lastPosition - ev.gesture.deltaX);
+        this.$el.scrollLeft(this.lastPosition - ev.gesture.deltaX);
     },
     
     swipeLeft: function(ev){
-        this.$el.animate({scrollLeft: scroller.scrollLeft+$('#header').width()},200);
+        this.$el.animate({scrollLeft: this.el.scrollLeft+this.$el.width()},200);
     },
     
     swipeRight: function(ev){
-        this.$el.animate({scrollLeft: scroller.scrollLeft-$('#header').width()},200);
+        this.$el.animate({scrollLeft: this.el.scrollLeft-this.$el.width()},200);
     },
     
     touch: function (ev) {
@@ -127,7 +128,7 @@ var ScreenCollectionView = Backbone.View.extend({
     
     render: function () {
         //Add the screens
-        var thisEl = $('<div id="#horizontalScroller" class="scroller"></div>');
+        var thisEl = $('<div id="horizontalScroller" class="scroller"></div>');
         var that = this;
         thisEl.css("width",(this.collection.length*100)+"%");
         this.collection.each(function (thisModel) {
@@ -161,6 +162,7 @@ var app = {
 		_.extend(this,Backbone.Events);
 		
 		this.router = new AppRouter();
+        this.screens = new ScreenCollectionView({iconTray: "#headerIcons", scrollEl: "#pageIndicator"});
 		
         this.bindEvents();
     },
@@ -176,8 +178,6 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        this.screens = new ScreenCollectionView();
-        
 		this.online = this.checkConnection();
 		$(document).on('offline',this.offlineFunc);
 		$(document).on('online',this.onlineFunc);
@@ -197,6 +197,7 @@ var app = {
         // }); 
 		
 		app.trigger('deviceready');
+        this.screens.render();
     },
 	
 	checkConnection: function () {
@@ -220,7 +221,7 @@ var app = {
 		app.online = true;
 	},
 	
-	register: function (thisName, thisIcon, thisController) {
-		return this.screens.add(new ScreenModel({'name': thisName, 'icon': thisIcon, 'view' : thisController}));
+	register: function (thisController) {
+		return this.screens.add(new ScreenModel({'name': thisController.displayName, 'icon': thisController.icon, 'view' : thisController}));
 	}
 };

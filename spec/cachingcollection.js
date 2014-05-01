@@ -162,7 +162,7 @@ describe("Caching Collection",function () {
 describe("CachingCollection View", function () {
 	
 	beforeEach(function () {
-		$('body').append("<div id='cachingstage'></div>");
+		$('body').append("<div id='cachingstage'><div id='horizontalWrapper'></div></div>");
 		app.initialize();
 		spyOn(app,'register').andReturn("#cachingstage");
 	});

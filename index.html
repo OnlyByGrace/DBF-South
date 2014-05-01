@@ -108,7 +108,8 @@
     <div id="header">
         <img src="images/DBFS-logo-app-icon.png" style="float: left; padding-top:1px;" />
         DBF South
-    <div id="headerIcons" style="position: relative; float: right; padding-top: 5px; padding-right: 10px;">
+    <div style="position: relative; float: right; padding-top: 5px; padding-right: 10px;">
+        <div id="headerIcons"></div>
         <div id="scrollIndicator" style="width: 100%;">
             <div id="pageIndicator"></div>
         </div>
@@ -162,10 +163,13 @@
 		
 		//$(document).trigger('deviceready');
 		
-        var newsView = new NewsCollectionView({displayName: "News"});
-		var sermonsView = new SermonCollectionView();
-		var sermonsView1 = new SermonCollectionView({displayName: "LatestSermons"});
-		var sermonsView2 = new SermonCollectionView({displayName: "NewestSermons"});
+        app.register(new NewsCollectionView({displayName: "News"}));
+        app.register(new SermonCollectionView());
+        app.register(new SermonCollectionView({displayName: "LatestSermons"}));
+        //var newsView = new NewsCollectionView({displayName: "News"});
+		//var sermonsView = new SermonCollectionView();
+		//var sermonsView1 = new SermonCollectionView({displayName: "LatestSermons"});
+		//var sermonsView2 = new SermonCollectionView({displayName: "NewestSermons"});
 		if (!Backbone.History.started) {
 			Backbone.history.start();
 		}
