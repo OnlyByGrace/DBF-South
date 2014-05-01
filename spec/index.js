@@ -286,11 +286,11 @@ describe("ScreenCollectionViewer", function () {
             thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
             thisView.add(new ScreenModel({name: "test1", icon: "test.png", view: controller}));
             thisView.render();
-            spyOn(thisView.$el,'scrollLeft');
+            spyOn(thisView.$el,'animate');
             $("#test1Screen").css("position","absolute");
             thisView.goTo(1);
             console.log($('#stage').html());
-            expect(thisView.$el.scrollLeft).toHaveBeenCalled();
+            expect(thisView.$el.animate).toHaveBeenCalled();
         });
     });
 });

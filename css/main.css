@@ -144,6 +144,16 @@ body
     float: left;
 	-ms-touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.wrapper div {
+    -ms-touch-action: pan-y;
 }
 
 .scroller

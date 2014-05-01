@@ -57,52 +57,48 @@ var ScreenCollectionView = Backbone.View.extend({
         this.currentScreen = 0;
         this.lastPosition = 0;
         
-        console.log("hammertime!");
-        
         var options = {
           dragLockToAxis: true,
           dragBlockHorizontal: true,
-          dragLockMinDistance: 40
+          dragLockMinDistance: 60
         };
-        console.log(this.el);
+        
         this.hammertime = new Hammer(this.el, options);
         this.hammertime.on("dragleft dragright", this.drag);
         this.hammertime.on("swipeleft", this.swipeLeft);
         this.hammertime.on("swiperight", this.swipeRight);
         this.hammertime.on("touch", this.touch);
         this.hammertime.on("release", this.release);
-        
-        console.log("done!");
 	},
     
     checkSnap: function () {
-        this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},200);
+        if (!this.swipe) {
+            this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},200);
+        }
     },
     
     drag: function(ev){
-        console.log(ev);
         ev.gesture.preventDefault();
         this.$el.scrollLeft(this.lastPosition - ev.gesture.deltaX);
     },
     
     swipeLeft: function(ev){
-        console.log(ev);
-        this.$el.animate({scrollLeft: this.el.scrollLeft+this.$el.width()},200);
+        this.swipe = true;
+        this.next();
     },
     
     swipeRight: function(ev){
-        console.log(ev);
-        this.$el.animate({scrollLeft: this.el.scrollLeft-this.$el.width()},200);
+        this.swipe = true;
+        this.prev();
     },
     
     touch: function (ev) {
-        console.log(ev);
+        this.swipe = false;
         this.lastPosition = this.el.scrollLeft;
         this.fingerDown = true;
     },
     
     release: function (ev) {
-        console.log(ev);
         this.fingerDown = false;
         this.checkSnap();
     },
@@ -132,7 +128,7 @@ var ScreenCollectionView = Backbone.View.extend({
 	goTo: function (screen) {
         var thisModel = this.collection.at(screen);
         if (thisModel) {
-            this.$el.scrollLeft($("#"+thisModel.get("el")).position().left);
+            this.$el.animate({scrollLeft: $("#"+thisModel.get("el")).position().left},200);
             this.currentScreen = screen;
         }
 	},
@@ -153,7 +149,17 @@ var ScreenCollectionView = Backbone.View.extend({
             }
         });
         this.$el.append(thisEl);
-    }
+    },
+    
+    onScroll: function () {
+		//console.log(this.displayName);
+		if (this.el.scrollTop < 100) {
+			var that = this;
+			setTimeout(function () { that.el.scrollTop = 100},10);
+			//this.$el.animate({scrollTop: 100},500);
+			setTimeout(that.onScroll,150);
+		}
+	}
 });
 
 var AppRouter = Backbone.Router.extend({
