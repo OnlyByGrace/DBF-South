@@ -154,14 +154,13 @@
 		});
 	});
 	
-	
     $(document).ready(function () {
-		app.initialize();
         //document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 		
 		//setTimeout(function () {$(document).trigger('deviceready')}, 3000);
 		
 		//$(document).trigger('deviceready');
+        app.initialize();
 		
         app.register(new NewsCollectionView({displayName: "News"}));
         app.register(new SermonCollectionView());
@@ -181,7 +180,7 @@
 </script>
 
 
-
+<script src="http://192.168.0.10:8080/target/target-script-min.js#anonymous"></script>
 <!-- <script src="http://jsconsole.com/remote.js?D55B5F65-1246-435B-952D-FEF9587DDC8A"></script> -->
 </body>
 

@@ -127,7 +127,8 @@ body
     /*height: 100%;*/
     width: 100%;
     background: #FFFFFF;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
 	-ms-touch-action: pan-x;
 }
 
@@ -138,25 +139,17 @@ body
     z-index: 0;
     width: 33.33333%;
     height: 100%;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     float: left;
 	-ms-touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
 }
 
-#wrapper2
-{
-    z-index: 1;
-    width: 33.333333%;
-    overflow: hidden;
-    height: 100%;
-    float: left;
-}
-
 .scroller
 {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     width: 100%;
     -webkit-transform: translateZ(0);
@@ -169,6 +162,10 @@ body
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -ms-touch-action: pan-y;
+    
+    overflow-y: scroll;
+    overflow-x: hidden;
     /*-webkit-text-size-adjust: none;
     -moz-text-size-adjust: none;
     -ms-text-size-adjust: none;
@@ -200,7 +197,7 @@ body
     text-size-adjust: none;*/
 	-ms-touch-action: pan-x;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: hidden;
 }
 
 .scroller ul

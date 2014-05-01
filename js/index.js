@@ -57,16 +57,22 @@ var ScreenCollectionView = Backbone.View.extend({
         this.currentScreen = 0;
         this.lastPosition = 0;
         
+        console.log("hammertime!");
+        
         var options = {
           dragLockToAxis: true,
-          dragBlockHorizontal: true
+          dragBlockHorizontal: true,
+          dragLockMinDistance: 40
         };
-        var hammertime = new Hammer(this.el, options);
-        hammertime.on("dragleft dragright", this.drag);
-        hammertime.on("swipeleft", this.swipeLeft);
-        hammertime.on("swiperight", this.swipeRight);
-        hammertime.on("touch", this.touch);
-        hammertime.on("release", this.release);
+        console.log(this.el);
+        this.hammertime = new Hammer(this.el, options);
+        this.hammertime.on("dragleft dragright", this.drag);
+        this.hammertime.on("swipeleft", this.swipeLeft);
+        this.hammertime.on("swiperight", this.swipeRight);
+        this.hammertime.on("touch", this.touch);
+        this.hammertime.on("release", this.release);
+        
+        console.log("done!");
 	},
     
     checkSnap: function () {
@@ -74,24 +80,29 @@ var ScreenCollectionView = Backbone.View.extend({
     },
     
     drag: function(ev){
+        console.log(ev);
         ev.gesture.preventDefault();
         this.$el.scrollLeft(this.lastPosition - ev.gesture.deltaX);
     },
     
     swipeLeft: function(ev){
+        console.log(ev);
         this.$el.animate({scrollLeft: this.el.scrollLeft+this.$el.width()},200);
     },
     
     swipeRight: function(ev){
+        console.log(ev);
         this.$el.animate({scrollLeft: this.el.scrollLeft-this.$el.width()},200);
     },
     
     touch: function (ev) {
+        console.log(ev);
         this.lastPosition = this.el.scrollLeft;
         this.fingerDown = true;
     },
     
     release: function (ev) {
+        console.log(ev);
         this.fingerDown = false;
         this.checkSnap();
     },
