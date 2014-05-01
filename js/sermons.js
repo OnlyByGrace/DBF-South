@@ -45,7 +45,7 @@ var SermonPopupView = Backbone.View.extend({
     },
     
     render: function (route, params) {
-        console.log(route);
+        //console.log(route);
         if (route != "sermonPopup") {
             return this.unrender();
         }
@@ -60,7 +60,7 @@ var SermonPopupView = Backbone.View.extend({
     },
     
     unrender: function (route, params) {
-        console.log(route);
+        //console.log(route);
         if ($.contains(document.body,this.el)) {
             $(this.el).animate({ top: "100%" }, {duration: 200, complete: this.removeElement });
         }

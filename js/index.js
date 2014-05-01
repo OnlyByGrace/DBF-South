@@ -22,6 +22,7 @@
 // }
 
 var ScreenModel = Backbone.Model.extend({
+    idAttribute: 'name',
 	defaults: {
 		'name':'',
 		'icon':''
@@ -36,26 +37,98 @@ var ScreenModelCollection = Backbone.Collection.extend({
 });
 
 var ScreenCollectionView = Backbone.View.extend({
-	el: '#outerWrapper',
-	initialize: function () {
+	el: '#horizontalWrapper',
+	initialize: function (opts) {
 		_.bindAll(this,'add','next','prev','goTo');
 	
+        if (opts) {
+            if (opts.scrollEl) {
+                this.scrollEl = opts.scrollEl;
+            }
+            
+            if (opts.iconTray) {
+                this.iconTray = opts.iconTray;
+            }
+        }
+    
 		this.collection = new ScreenModelCollection();
-		this.currentScreen = 0;
+        this.currentScreen = 0;
+        
+        var options = {
+          dragLockToAxis: true,
+          dragBlockHorizontal: true
+        };
+        var hammertime = new Hammer(this.el, options);
+        hammertime.on("dragleft dragright", this.drag);
+        hammertime.on("swipeleft", this.swipeLeft);
+        hammertime.on("swiperight", this.swipeRight);
+        hammertime.on("touch", this.touch);
+        hammertime.on("release", this.release);
 	},
+    
+    checkSnap: function () {
+        this.$el.animate({scrollLeft: Math.round(scroller.scrollLeft / el.offsetWidth) *el.offsetWidth},200);
+    },
+    
+    drag: function(ev){
+        ev.gesture.preventDefault();
+        this.$el.scrollLeft(lastPosition - ev.gesture.deltaX);
+    },
+    
+    swipeLeft: function(ev){
+        this.$el.animate({scrollLeft: scroller.scrollLeft+$('#header').width()},200);
+    },
+    
+    swipeRight: function(ev){
+        this.$el.animate({scrollLeft: scroller.scrollLeft-$('#header').width()},200);
+    },
+    
+    touch: function (ev) {
+        this.lastPosition = this.el.scrollLeft;
+        this.fingerDown = true;
+    },
+    
+    release: function (ev) {
+        this.fingerDown = false;
+        this.checkSnap();
+    },
 	
 	add: function (model) {
-		this.collection.add(model);
+        if (!this.collection.findWhere({name: model.get("name")})) {
+            this.collection.add(model);
+            $(this.$el.children(":first")).append("<div id='"+encodeURI(model.get("name"))+"Screen' class='wrapper'></div>");
+            $(this.$el.children(":first")).css("width",(this.collection.length*100)+"%");
+            $('div.wrapper').css("width",(100/this.collection.length)+"%");
+            model.set("el","#"+encodeURI(model.get("name")+"Screen"));
+            
+            if (model.get("icon")) {
+                $(this.iconTray).append("<a><img src='"+model.get('icon')+"' /></a>");
+            }
+            
+            return model.get("el")
+        }
+		return null;
 	},
 	
 	next: function () {
-		
+        if ((this.collection.length - 1) > this.currentScreen) {
+            this.goTo(this.currentScreen+1);
+        }
 	},
 	
 	prev: function () {
+        if (this.currentScreen > 0) {
+            this.goTo(this.currentScreen-1);
+        }
 	},
 	
 	goTo: function (screen) {
+        var thisModel = this.collection.at(screen);
+        if (thisModel) {
+            console.log($(thisModel.get("el")).position().left);
+            this.$el.scrollLeft($(thisModel.get("el")).position().left);
+            this.currentScreen = screen;
+        }
 	}	
 });
 
@@ -96,19 +169,19 @@ var app = {
 		$(document).on('offline',this.offlineFunc);
 		$(document).on('online',this.onlineFunc);
 	
-		this.scroller = new IScroll('#horizontalWrapper', {
-            scrollX: true,
-            scrollY: false,
-            momentum: false,
-            snap: true,
-            snapSpeed: 200,
-            // click: true,
-            tap: true,
-            indicators: {
-                el: document.getElementById('scrollIndicator'),
-                resize: false
-            }
-        }); 
+		// this.scroller = new IScroll('#horizontalWrapper', {
+            // scrollX: true,
+            // scrollY: false,
+            // momentum: false,
+            // snap: true,
+            // snapSpeed: 200,
+            ////click: true,
+            // tap: true,
+            // indicators: {
+                // el: document.getElementById('scrollIndicator'),
+                // resize: false
+            // }
+        // }); 
 		
 		app.trigger('deviceready');
     },
@@ -146,11 +219,11 @@ var app = {
 			$('div.wrapper').css("width",(100/this.screens.length)+"%");
 			//console.log((100/this.screens.length)+"%");
 			
-			if (this.scroller) {
-				setTimeout(function () {
-					app.scroller.refresh();
-				}, 10);
-			}
+			// if (this.scroller) {
+				// setTimeout(function () {
+					// app.scroller.refresh();
+				// }, 10);
+			// }
 			
 			return ("#"+thisName+"Screen");
 		}
