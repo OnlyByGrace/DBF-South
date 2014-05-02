@@ -147,6 +147,7 @@ describe("ScreenCollectionViewer", function () {
         called: 0,
         render: function () {
             this.called++;
+            return "<div></div>";
         }
     };
 
@@ -265,6 +266,7 @@ describe("ScreenCollectionViewer", function () {
             thisView.add(new ScreenModel({name: "test", icon: "test.png", view: controller}));
             thisView.add(new ScreenModel({name: "test1", icon: "test.png", view: controller}));
             thisView.render();
+            console.log($('#stage').html());
             thisView.next();
             thisView.prev();
             expect(thisView.goTo).toHaveBeenCalledWith(0);

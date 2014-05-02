@@ -29,9 +29,9 @@
 
 *
 {
-    -webkit-box-sizing: border-box;
+    /* -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    box-sizing: border-box; */
 }
 
 html
@@ -41,18 +41,22 @@ html
 
 body, ul, li
 {
-    padding: 0;
+    /* padding: 0;
     margin: 0;
-    border: 0;
+    border: 0; */
 }
 
 body
 {
+    height: 100%;
     background: #FFFFFF;
-    font-size: x-large;
-    font-family: ubuntu, helvetica, arial;
+    /*font-size: x-large;
+    font-family: ubuntu, helvetica, arial;*/
     overflow-y: hidden; /* this is important to prevent the whole page to bounce */
+    overflow-x: hidden;
 	-ms-touch-action: none;
+    
+    /* border: 2px blue solid; */
 }
 
 #header
@@ -112,38 +116,40 @@ body
     padding: 0;
     border-top: 1px solid #444;
     text-align:center;
-	
-	-ms-scroll-snap-y: mandatory snapList(48px);
-    -ms-overflow-style: none;
 }
 
 #horizontalWrapper
 {
     position: absolute;
-    z-index: 1;
     top: 45px;
-    bottom: 48px;
-    left: 0;
+    left:0px;
+    bottom: 0px;
     /*height: 100%;*/
     width: 100%;
     background: #FFFFFF;
     overflow-x: hidden;
     overflow-y: hidden;
+    -ms-scroll-chaining: none; 
 	-ms-touch-action: pan-x;
+    
+    /* border: 1px black solid; */
 }
 
 .wrapper
 {
 	position: relative;
     top: 0px;
-    z-index: 0;
-    width: 33.33333%;
+    /* margin-right: 10px; */
+    width: 30%;
+    margin-left: 10px;
+    margin-right: 10px;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
     float: left;
 	-ms-touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
+    -ms-scroll-chaining: none;
     
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -152,14 +158,9 @@ body
     user-select: none;
 }
 
-.wrapper div {
-    -ms-touch-action: pan-y;
-}
-
 .scroller
 {
     position: absolute;
-    z-index: 0;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     width: 100%;
     -webkit-transform: translateZ(0);
@@ -186,15 +187,17 @@ body
 #horizontalScroller
 {
     position: absolute;
-    z-index: 1;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     width: 300%;
-    height: 100%;
-    -webkit-transform: translateZ(0);
+    top: 10px;
+    bottom: 10px;
+    overflow-x: hidden;
+	overflow-y: hidden;
+     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
     -ms-transform: translateZ(0);
     -o-transform: translateZ(0);
-    transform: translateZ(0);
+    transform: translateZ(0); 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -206,8 +209,9 @@ body
     -o-text-size-adjust: none;
     text-size-adjust: none;*/
 	-ms-touch-action: pan-x;
-	overflow-x: hidden;
-	overflow-y: hidden;
+    -ms-scroll-chaining: none; 
+	
+    /* border: 1px black solid; */
 }
 
 .scroller ul
@@ -411,8 +415,9 @@ body
     left: 0px;
     width: 100%;
     height: 100%;
-    background-color:rgba(50,50,50,0.5);
+    background-color:#ccc;
     z-index: 3;
+    backface-visibility: hidden;
 }
 
 .sermonPopupContent {

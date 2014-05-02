@@ -56,13 +56,13 @@ var SermonPopupView = Backbone.View.extend({
     
         $(this.el).html(this.template(this.collection.get(params[0]).attributes));
         $('body').append(this.el);
-        $(this.el).animate({ top: "0px" } /*{ complete: this.shown }*/);
+        $(this.el).transition({ top: "45px"} /*{ complete: this.shown }*/);
     },
     
     unrender: function (route, params) {
         //console.log(route);
         if ($.contains(document.body,this.el)) {
-            $(this.el).animate({ top: "100%" }, {duration: 200, complete: this.removeElement });
+            $(this.el).transition({ top: "100%", duration: 200, complete: this.removeElement});
         }
     },
     

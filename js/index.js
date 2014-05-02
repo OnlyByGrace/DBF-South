@@ -40,8 +40,11 @@ var ScreenModelCollection = Backbone.Collection.extend({
 
 var ScreenCollectionView = Backbone.View.extend({
 	el: '#horizontalWrapper',
+    events: {
+        'scroll' : 'updateScroller'
+    },
 	initialize: function (opts) {
-		_.bindAll(this,'add','next','prev','goTo','render','touch','release','swipeLeft','swipeRight','drag');
+		_.bindAll(this,'add','next','prev','goTo','render','touch','release','swipeLeft','swipeRight','drag','updateScroller');
 	
         if (opts) {
             if (opts.scrollEl) {
@@ -73,6 +76,7 @@ var ScreenCollectionView = Backbone.View.extend({
     
     checkSnap: function () {
         if (!this.swipe) {
+            console.log(Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth);
             this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},200);
         }
     },
@@ -80,6 +84,7 @@ var ScreenCollectionView = Backbone.View.extend({
     drag: function(ev){
         ev.gesture.preventDefault();
         this.$el.scrollLeft(this.lastPosition - ev.gesture.deltaX);
+        //this.updateScroller();
     },
     
     swipeLeft: function(ev){
@@ -139,8 +144,12 @@ var ScreenCollectionView = Backbone.View.extend({
         var that = this;
         thisEl.css("width",(this.collection.length*100)+"%");
         this.collection.each(function (thisModel) {
-            var newEl = $('<div id="'+thisModel.get('el')+'" class="wrapper"></div>').css("width",(100/that.collection.length)+"%");
-            newEl.append(thisModel.get('view').render());
+            var newEl = $(thisModel.get('view').render());
+            
+            newEl.attr('id',thisModel.get('el'));
+            newEl.addClass("wrapper");
+            newEl.css("width",(100/that.collection.length)+"%");
+            
             thisEl.append(newEl);
             
             //Add the icons - need a default icon
@@ -151,15 +160,9 @@ var ScreenCollectionView = Backbone.View.extend({
         this.$el.append(thisEl);
     },
     
-    onScroll: function () {
-		//console.log(this.displayName);
-		if (this.el.scrollTop < 100) {
-			var that = this;
-			setTimeout(function () { that.el.scrollTop = 100},10);
-			//this.$el.animate({scrollTop: 100},500);
-			setTimeout(that.onScroll,150);
-		}
-	}
+    updateScroller: function () {
+        $(this.scrollEl).css("left",(this.el.scrollLeft/$('#horizontalScroller').width())*100+"%");
+    }
 });
 
 var AppRouter = Backbone.Router.extend({
