@@ -62,8 +62,10 @@ var ScreenCollectionView = Backbone.View.extend({
         
         var options = {
           dragLockToAxis: true,
+          transform: false,
           dragBlockHorizontal: true,
-          dragLockMinDistance: 60
+          dragMinDistance: 20,
+          swipeVelocityX: 0.05
         };
         
         this.hammertime = new Hammer(this.el, options);
@@ -76,12 +78,18 @@ var ScreenCollectionView = Backbone.View.extend({
     
     checkSnap: function () {
         if (!this.swipe) {
-            console.log(Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth);
-            this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},200);
+            //console.log(Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth);
+            this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},100);
         }
     },
     
     drag: function(ev){
+        //console.log(ev.type + " - " + ev.gesture.deltaX + " - " + ev.gesture.direction);
+        
+        if (Math.abs(ev.gesture.deltaY) > Math.abs(ev.gesture.deltaX)) {
+            return;
+        }
+        
         ev.gesture.preventDefault();
         this.$el.scrollLeft(this.lastPosition - ev.gesture.deltaX);
         //this.updateScroller();
@@ -161,7 +169,7 @@ var ScreenCollectionView = Backbone.View.extend({
     },
     
     updateScroller: function () {
-        $(this.scrollEl).css("left",(this.el.scrollLeft/$('#horizontalScroller').width())*100+"%");
+        $(this.scrollEl).css("left", (this.el.scrollLeft/$('#horizontalScroller').width())*100+"%");
     }
 });
 

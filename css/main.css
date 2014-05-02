@@ -141,8 +141,8 @@ body
     top: 0px;
     /* margin-right: 10px; */
     width: 30%;
-    margin-left: 10px;
-    margin-right: 10px;
+    /* margin-left: 10px; */
+    /* margin-right: 10px; */
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
