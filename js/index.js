@@ -79,7 +79,7 @@ var ScreenCollectionView = Backbone.View.extend({
     checkSnap: function () {
         if (!this.swipe) {
             //console.log(Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth);
-            this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},100);
+            this.$el.animate({scrollLeft: Math.round(this.el.scrollLeft / this.el.offsetWidth) *this.el.offsetWidth},50);
         }
     },
     
@@ -175,7 +175,7 @@ var ScreenCollectionView = Backbone.View.extend({
 
 var AppRouter = Backbone.Router.extend({
 	routes: {
-        '' : 'home'
+        'home' : 'home'
     }
 });
  
@@ -224,6 +224,8 @@ var app = {
             // }
         // }); 
 		
+        this.router.navigate("home");
+        
 		app.trigger('deviceready');
         this.screens.render();
     },
