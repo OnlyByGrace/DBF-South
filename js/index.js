@@ -209,20 +209,21 @@ var app = {
 		this.online = this.checkConnection();
 		$(document).on('offline',this.offlineFunc);
 		$(document).on('online',this.onlineFunc);
-	
-		// this.scroller = new IScroll('#horizontalWrapper', {
-            // scrollX: true,
-            // scrollY: false,
-            // momentum: false,
-            // snap: true,
-            // snapSpeed: 200,
-            ////click: true,
-            // tap: true,
-            // indicators: {
-                // el: document.getElementById('scrollIndicator'),
-                // resize: false
-            // }
-        // }); 
+
+		this.scroller = new IScroll('#horizontalWrapper', {
+            scrollX: true,
+            scrollY: false,
+            momentum: false,
+            snap: true,
+            snapSpeed: 200,
+            // click: true,
+            tap: true,
+            indicators: {
+                el: document.getElementById('scrollIndicator'),
+                resize: false
+            },
+            eventPassthrough: true
+        });
 		
         this.router.navigate("home");
         
