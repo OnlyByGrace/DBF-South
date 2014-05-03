@@ -22,6 +22,39 @@ describe("Caching Collection",function () {
 			expect(thisCollection.name).toBe("base");
 		});
 	});
+    
+    describe("loadCache", function () {
+        it("should load the list properly if the cache version is 1.0", function () {
+            var thisModel = {title: "Testing"};
+			window.localStorage.setItem("baseCache",JSON.stringify(new CacheModel({version: "1.0", date: new Date(), data: thisModel})));
+			thisCollection.fetch();
+			expect(thisCollection.pluck("title")).toEqual(["Testing"]);
+			window.localStorage.removeItem("baseCache");
+        });
+    
+        it("should load the list as raw models if no cache version is specified (version 0)", function () {
+            var thisModel = {title: "Testing"};
+			window.localStorage.setItem("baseCache",JSON.stringify(thisModel));
+			thisCollection.fetch();
+			expect(thisCollection.pluck("title")).toEqual(["Testing"]);
+            var newCache = JSON.parse(window.localStorage.getItem("baseCache"));
+            expect(newCache.version).toBe("1.0");
+			window.localStorage.removeItem("baseCache");
+        });
+        
+        it("should throw an error if an unknown version is specified", function () {
+            var thisModel = {title: "Testing"};
+			window.localStorage.setItem("baseCache",JSON.stringify(new CacheModel({version: "1.1", date: new Date(), data: thisModel})));
+            var caught = false;
+            try {
+                thisCollection.fetch();
+            } catch (err) {
+                caught = true;
+            }
+			expect(caught).toBe(true);
+			window.localStorage.removeItem("baseCache");
+        });
+    });
 	
 	describe("fetch", function () {
 		it("should throw an exception of no name is set", function () {
@@ -37,7 +70,7 @@ describe("Caching Collection",function () {
 	
 		it("should load cache first", function () {
 			var thisModel = {title: "Testing"};
-			window.localStorage.setItem("baseCache",JSON.stringify(thisModel));
+			window.localStorage.setItem("baseCache",JSON.stringify(new CacheModel({date: new Date(), data: thisModel})));
 			thisCollection.fetch();
 			expect(thisCollection.pluck("title")).toEqual(["Testing"]);
 			window.localStorage.removeItem("baseCache");
@@ -46,7 +79,7 @@ describe("Caching Collection",function () {
 		it("should not load cache if collection already has items", function () {
 			thisCollection.add({title: "Testing"});
 			var thisModel = {title: "Testing2"};
-			window.localStorage.setItem("baseCache",JSON.stringify(thisModel));
+			window.localStorage.setItem("baseCache",JSON.stringify(new CacheModel({date: new Date(), data: thisModel})));
 			thisCollection.fetch();
 			expect(thisCollection.pluck("title")).toEqual(["Testing"]);
 			window.localStorage.removeItem("baseCache");
@@ -128,7 +161,7 @@ describe("Caching Collection",function () {
 			thisCollection.save();
 			
 			var temp = JSON.parse(window.localStorage.getItem(thisCollection.name+"Cache"));
-			expect(temp).toEqual([thisModel]);
+			expect(temp.data).toEqual([thisModel]);
 		});
 		
 		it("should fire on model add", function () {
@@ -136,7 +169,7 @@ describe("Caching Collection",function () {
 			thisCollection.add(thisModel);
 			
 			var temp = JSON.parse(window.localStorage.getItem(thisCollection.name+"Cache"));
-			expect(temp).toEqual([thisModel]);
+			expect(temp.data).toEqual([thisModel]);
 		});
 		
 		it("should fire on model remove", function () {
@@ -145,7 +178,7 @@ describe("Caching Collection",function () {
 			thisCollection.remove(thisCollection.at(0));
 			
 			var temp = JSON.parse(window.localStorage.getItem(thisCollection.name+"Cache"));
-			expect(temp).toEqual([]);
+			expect(temp.data).toEqual([]);
 		});
 		
 		it("should fire on collection reset", function () {
@@ -154,7 +187,7 @@ describe("Caching Collection",function () {
 			thisCollection.reset();
 			
 			var temp = JSON.parse(window.localStorage.getItem(thisCollection.name+"Cache"));
-			expect(temp).toEqual([]);
+			expect(temp.data).toEqual([]);
 		});
 	});
 });

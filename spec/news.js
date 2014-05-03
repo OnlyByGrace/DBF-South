@@ -151,7 +151,7 @@ describe("News Section", function () {
 				
 				runs(function () {
 					thisCollection.add(previousModel);
-					window.localStorage.setItem("newsCache","["+JSON.stringify(thisModel)+"]");
+					window.localStorage.setItem("newsCache",JSON.stringify(new CacheModel({date: new Date(), data: thisModel})));
 					spyOn(thisCollection,"sync").andCallThrough();
 					thisCollection.fetch();
 				});
@@ -169,7 +169,7 @@ describe("News Section", function () {
 				var thisModel = new NewsModel({title: "Test", content: "This is a test"});
 				
 				runs(function () {
-					window.localStorage.setItem("newsCache","["+JSON.stringify(thisModel)+"]");
+					window.localStorage.setItem("newsCache",JSON.stringify(new CacheModel({date: new Date(), data: thisModel})));
 					thisCollection.fetch();
 				});
 				

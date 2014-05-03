@@ -1,5 +1,13 @@
+var CacheModel = Backbone.Model.extend({
+    defaults: {
+        version: '1.0',
+        date: null,
+        data: null
+    }
+});
+
 var CachingCollection = Backbone.Collection.extend({
-	lastUpdate: "never",
+	lastUpdate: null,
 	initialize: function (models,opts) {
 		_.bindAll(this,'loadCache','loadLive','sync','save');
 		this.listenTo(this, 'add', this.save);
@@ -21,7 +29,27 @@ var CachingCollection = Backbone.Collection.extend({
 	
 	loadCache: function () {
 		var items = JSON.parse(window.localStorage.getItem(this.name+"Cache"));
-		this.set(items);
+        if (items) {
+            if (!items.version) {
+                items.version = "0"
+            }
+            
+            switch (items.version) {
+                case "0":
+                    this.lastUpdate = "unknown";
+                    this.set(items);
+                    break;
+                case "1.0":
+                    this.lastUpdate = items.date;
+                    this.set(items.data);
+                    break;
+                default:
+                    throw "Unknown cache version";
+                    break;
+            }
+        } else {
+            this.lastUpdate = "never";
+        }
 	},
 	
 	loadLive: function (options) {
@@ -67,7 +95,8 @@ var CachingCollection = Backbone.Collection.extend({
 	},
 	
 	save: function () {
-		window.localStorage.setItem(this.name+"Cache",JSON.stringify(this));
+        var newCache = new CacheModel({date: new Date(), data: this});
+		window.localStorage.setItem(this.name+"Cache",JSON.stringify(newCache));
 	}
 });
 
@@ -143,7 +172,7 @@ var CachingCollectionView = Backbone.View.extend({
             this.$el.html("<h6>"+this.displayName+"</h6>");
         }
 		var that = this;
-		setTimeout(function () { that.el.scrollTop = 100},250);
+		//setTimeout(function () { that.el.scrollTop = 100},250);
         return this.el;
 	},
 	
