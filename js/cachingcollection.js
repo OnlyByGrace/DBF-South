@@ -75,7 +75,7 @@ var CachingCollectionView = Backbone.View.extend({
 	displayName: '',
 	icon: '',
 	events: {
-		'scroll': 'onScroll'
+	//	'scroll': 'onScroll'
 	},
 	initialize: function (opts) {
 		_.bindAll(this, 'itemAdded', 'refresh', 'render', 'onDeviceReady', 'onCollectionLoaded', 'onCollectionError','onScroll','initializeScroller');
@@ -140,7 +140,7 @@ var CachingCollectionView = Backbone.View.extend({
 	
 	render: function () {
         if (this.$el.html() == "") {
-            this.$el.html("<div style='height:100px'></div><h6>"+this.displayName+"</h6>");
+            this.$el.html("<h6>"+this.displayName+"</h6>");
         }
 		var that = this;
 		setTimeout(function () { that.el.scrollTop = 100},250);
@@ -161,11 +161,11 @@ var CachingCollectionView = Backbone.View.extend({
             return;
         }
 		//console.log(this.displayName);
-		if (this.el.scrollTop < 100) {
+		if (this.el.scrollTop < 50) {
 			var that = this;
             this.adjusting = true;
 			//setTimeout(function () { that.el.scrollTop = 100},10);
-			this.$el.animate({scrollTop: 100},200, function () {that.adjusting = false});
+			this.$el.animate({scrollTop: 50},200, function () {that.adjusting = false});
 			setTimeout(that.onScroll,150);
 		}
 	}
