@@ -40,7 +40,7 @@ var CachingCollection = Backbone.Collection.extend({
                     this.set(items);
                     break;
                 case "1.0":
-                    this.lastUpdate = items.date;
+                    this.lastUpdate = new Date(items.date);
                     this.set(items.data);
                     break;
                 default:
@@ -56,13 +56,16 @@ var CachingCollection = Backbone.Collection.extend({
 		$.ajax({ context: this,
 			type: 'GET',
 			url: this.url,
-			cache: false})
+			cache: false, timeout: 2000})
 			.fail(function () {
+                console.log("failure");
                 if (options.errorCallback) {
                     options.errorCallback();
                 }
 			})
-			.done(function (data) {
+			.done(function (data, textStatus, jqXHR) {
+                //console.log(data);
+                //console.log(JSON.stringify(jqXHR));
 				this.complete(data);
 				options.successCallback();
 			});
@@ -85,6 +88,7 @@ var CachingCollection = Backbone.Collection.extend({
 			this.loadCache();
 		}
 		
+        console.log(app.online);
 		if ((app.online == true) && this.url) {
 			this.loadLive(options);
 		} else {
@@ -151,7 +155,7 @@ var CachingCollectionView = Backbone.View.extend({
 	},
 	
 	onDeviceReady: function () {
-		this.$el.prepend("<div class='loadingbanner' style='width:"+this.$el.css("width")+"'>Loading...</div>");
+		this.$el.prepend("<div class='loadingbanner' style='width:100%'>Loading...</div>");
 		this.collection.fetch({successCallback: this.onCollectionLoaded, errorCallback: this.onCollectionError});
 	},
 	
@@ -161,10 +165,17 @@ var CachingCollectionView = Backbone.View.extend({
 	
 	onCollectionError: function () {
 		this.$el.children('.loadingbanner').remove();
-		this.$el.prepend("<div class='offlinebanner' style='width:100%'>Last updated "+this.collection.lastUpdate+"</div>");
-		if (this.collection.lastUpdate == null) {
-			this.$el.children('.offlinebanner').text("No connection");
-		}
+        var lastUpdated = "never";
+        
+        if (this.collection.lastUpdate) {
+            var d = this.collection.lastUpdate;
+            if (d.toLocaleDateString) {
+                lastUpdated = d.toLocaleDateString();
+                //lastUpdated = d.getDay()+"/"+d.getMonth()+"/"+d.getFullYear()+" at "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+            }
+        }
+        
+		this.$el.prepend("<div class='offlinebanner' style='width:100%'>Last updated "+lastUpdated+"</div>");
 	},
 	
 	render: function () {

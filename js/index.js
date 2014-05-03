@@ -207,6 +207,7 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
 		this.online = this.checkConnection();
+        console.log(this.online);
 		$(document).on('offline',this.offlineFunc);
 		$(document).on('online',this.onlineFunc);
 
@@ -234,7 +235,7 @@ var app = {
 	checkConnection: function () {
 		if (navigator.connection) {
 			var networkState = navigator.connection.type;
-			if (networkState == navigator.connection.NONE) {
+			if ((networkState == navigator.connection.NONE) || (networkState == "none")) {
 				return false;
 			} else {
 				return true;
