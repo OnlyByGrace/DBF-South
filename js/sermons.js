@@ -19,60 +19,66 @@ var SermonModelView = TemplateModelView.extend({
 	}
 });
 
-var SermonPopupView = Backbone.View.extend({
-    className: "sermonPopup",
-    events: {
-        'click' : 'onClick'
-    },
-    initialize: function (opts) {
-        _.bindAll(this, 'render', 'unrender','removeElement');
-        
-        if (!this.collection) {
-            throw "No collection specified";
-        }
-        
-        if (!opts || !opts.displayName) {
-            throw "No display name specified";
-        }
-        
-        this.displayName = opts.displayName;
-        
-        var source = $('#sermon-popup-template').html();
-        this.template = Handlebars.compile(source);
-        
-        app.router.route("sermons/:id","sermonPopup");
-        this.listenTo(app.router,'route',this.render);
-    },
-    
-    render: function (route, params) {
-        if (route != "sermonPopup") {
-            return this.unrender();
-        }
-
-        if (!this.collection.get(params[0])) {
-            return;
-        }
-    
-        $(this.el).html(this.template(this.collection.get(params[0]).attributes));
-        $('body').append(this.el);
-        $(this.el).transition({ top: "45px"} /*{ complete: this.shown }*/);
-    },
-    
-    unrender: function (route, params) {
-        //console.log(route);
-        if ($.contains(document.body,this.el)) {
-            $(this.el).transition({ top: "100%", duration: 200, complete: this.removeElement});
-        }
-    },
-    
-    removeElement: function () {
-        this.$el.remove();
-    },
-    
-    onClick: function () {
-        //window.history.back();
-    }
+var SermonPopupView = TemplatePopupView.extend({
+    template: "#sermon-popup-template",
+    route: "sermons/:id",
+    id: "sermonPopup"
 });
+
+// var SermonPopupView = Backbone.View.extend({
+    // className: "sermonPopup",
+    // events: {
+        // 'click' : 'onClick'
+    // },
+    // initialize: function (opts) {
+        // _.bindAll(this, 'render', 'unrender','removeElement');
+        
+        // if (!this.collection) {
+            // throw "No collection specified";
+        // }
+        
+        // if (!opts || !opts.displayName) {
+            // throw "No display name specified";
+        // }
+        
+        // this.displayName = opts.displayName;
+        
+        // var source = $('#sermon-popup-template').html();
+        // this.template = Handlebars.compile(source);
+        
+        // app.router.route("sermons/:id","sermonPopup");
+        // this.listenTo(app.router,'route',this.render);
+    // },
+    
+    // render: function (route, params) {
+        // if (route != "sermonPopup") {
+            // return this.unrender();
+        // }
+
+        // if (!this.collection.get(params[0])) {
+            // return;
+        // }
+    
+        // $(this.el).html(this.template(this.collection.get(params[0]).attributes));
+        // $('body').append(this.el);
+        // $(this.el).transition({ top: "45px"} /*{ complete: this.shown }*/);
+    // },
+    
+    // unrender: function (route, params) {
+        // //console.log(route);
+        // if ($.contains(document.body,this.el)) {
+            // $(this.el).transition({ top: "100%", duration: 200, complete: this.removeElement});
+        // }
+    // },
+    
+    // removeElement: function () {
+        // this.$el.remove();
+    // },
+    
+    // onClick: function () {
+        // //window.history.back();
+    // }
+// });
 
 var SermonCollection = CachingCollection.extend({
 	model: SermonModel,

@@ -36,12 +36,13 @@ var TemplateModelView = Backbone.View.extend({
 });
 
 var TemplatePopupView = Backbone.View.extend({
-    className: "sermonPopup",
+    className: "templatePopup",
     events: {
-        'click' : 'onClick'
+        'click' : 'onClick',
+        '.button click': 'close'
     },
     initialize: function (opts) {
-        _.bindAll(this,'render');
+        _.bindAll(this,'render','unrender','removeElement','onClick','close');
     
         if (opts) {
             if (opts.collection) {
@@ -99,6 +100,10 @@ var TemplatePopupView = Backbone.View.extend({
     
     removeElement: function () {
         this.$el.remove();
+    },
+    
+    close: function () {
+        window.history.back();
     },
     
     /* Should be overwritten */

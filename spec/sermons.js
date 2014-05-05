@@ -84,16 +84,6 @@ describe("SermonPopupView", function () {
             expect(errorThrown).toBe(true);
         });
         
-        it("should throw an exception if no name is defined", function () {
-            var errorThrown = false;
-            try {
-                var thisView = new SermonPopupView({collection: {}});
-            } catch (error) {
-                errorThrown = true;
-            }
-            expect(errorThrown).toBe(true);
-        });
-        
         it("should add an route for the popup", function () {
             spyOn(app.router,'route');
             var thisView = new SermonPopupView({collection: {}, displayName: "test"});
