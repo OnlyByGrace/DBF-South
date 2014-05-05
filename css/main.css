@@ -455,6 +455,21 @@ body
     width: 100%;
 }
 
+.sermonPopupButtons {
+    position: absolute;
+    height: 50px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+}
+
+.sermonPlayButton, .sermonDownloadButton {
+    width: 50%;
+    padding-top: 15px;
+    height: 50px;
+    float: left;
+}
+
 .img-responsive {
     width: 100%;
     height: auto;

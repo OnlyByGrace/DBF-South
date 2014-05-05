@@ -13,9 +13,11 @@
 	<script src="lib/hammer.min.js"></script>
 
     <script id="sermon-popup-template" type="text/x-handlebars-template"> 
-        <div class="sermonPopupContent"> 
-            <h3>{{title}}</h3><br />
-            {{description}}<br />{{speaker}}<br />{{date}}<br />{{length}}
+        <h3>{{title}}</h3><br />
+        {{description}}<br />{{speaker}}<br />{{date}}<br />{{length}}
+        <div class="sermonPopupButtons">
+            <div class="sermonPlayButton">Play</div>
+            <div class="sermonDownloadButton">Download</div>
         </div>
     </script>
     
@@ -49,7 +51,7 @@
         <div class="bottomPlayLink"></div>-->
     </script>
 
-    <script id="download-template" type="text/x-handlebars-template">
+    <script id="download-item-template" type="text/x-handlebars-template">
         <h5>{{title}}</h5>
 
         {{#if downloaded}}
@@ -85,7 +87,7 @@
 	
     <script src="js/news.js"></script>
     <script src="js/sermons.js"></script>
-    <!-- <script src="js/downloads.js"></script> -->
+    <script src="js/downloads.js"></script>
 
     <script type="text/javascript">
         var currentPage = "news";
@@ -127,53 +129,18 @@
     </div>-->
 
 <script type="text/javascript">
-    //$(document).on('tap', function (event) {
-    //    console.log(event.type);
-    //});
-
-    //$(document).on('click', function (event) {
-    //    //console.log(event.type);
-    //});
-    (function watch_events() {
-		var events = [
-			'MSGestureEnd',
-			'MSGestureStart',
-			'MSPointerHover',
-			'MSPointerDown',
-			'MSPointerMove'
-		];
-
-		$.each(events, function (i, val) {
-			// console.log('Binding: ' + val);
-			$(document).bind(val, function (evt) {
-				var msg = evt.type + ' on ' + evt.target.id + ' ' + evt.target.localName;
-				console.log(msg);
-			} );
-		});
-	});
-	
     $(document).ready(function () {
         //document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-		
-		//setTimeout(function () {$(document).trigger('deviceready')}, 3000);
-		
-		//$(document).trigger('deviceready');
+        
         app.initialize();
 		
         app.register(new NewsCollectionView({displayName: "News"}));
         app.register(new SermonCollectionView());
-        app.register(new SermonCollectionView({displayName: "LatestSermons"}));
-        //var newsView = new NewsCollectionView({displayName: "News"});
-		//var sermonsView = new SermonCollectionView();
-		//var sermonsView1 = new SermonCollectionView({displayName: "LatestSermons"});
-		//var sermonsView2 = new SermonCollectionView({displayName: "NewestSermons"});
+        app.register(new DownloadCollectionView());
+        
 		if (!Backbone.History.started) {
 			Backbone.history.start();
 		}
-		
-		//$(document).trigger('deviceready');
-        //var downloadView = new DownloadListView();
-        //var sermonView = new SermonListView();
     });
 </script>
 </body>

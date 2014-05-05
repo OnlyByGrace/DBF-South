@@ -90,6 +90,7 @@ var CachingCollection = Backbone.Collection.extend({
         
         if (this.offline == true) {
             options.successCallback();
+            return;
         }
 		
         //console.log(app.online);

@@ -7,6 +7,7 @@ var SermonModel = Backbone.Model.extend({
 		'date':'',
 		'length':'',
 		'downloaded':false,
+        'progress': 0,
 		'url':''
 	}
 });
@@ -23,7 +24,24 @@ var SermonModelView = TemplateModelView.extend({
 var SermonPopupView = TemplatePopupView.extend({
     template: "#sermon-popup-template",
     route: "sermons/:id",
-    id: "sermonPopup"
+    id: "sermonPopup",
+    
+    events: {
+        'click .sermonPlayButton': 'onPlay',
+        'click .sermonDownloadButton': 'onDownload',
+    },
+    
+    init: function() {
+        _.bindAll(this, 'onDownload');
+    },
+
+    onPlay: function () {
+        
+    },
+    
+    onDownload: function () {
+        app.trigger('newDownload',this.collection.get(this.currentId));
+    }
 })
 
 var SermonCollection = CachingCollection.extend({
@@ -63,6 +81,13 @@ var SermonCollectionView = CachingCollectionView.extend({
         var thisModel = this.collection.get(id);
         if (thisModel) {
             thisModel.set('downloaded', true);
+        }
+    },
+    
+    downloadProgress: function (id, progress) {
+        var thisModel = this.collection.get(id);
+        if (thisModel) {
+            thisModel.set('progress', progress);
         }
     },
 	

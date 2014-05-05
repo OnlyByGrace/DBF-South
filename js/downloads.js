@@ -17,12 +17,15 @@ var DownloadCollection = CachingCollection.extend({
 });
 
 var DownloadModelView = TemplateModelView.extend({
+    className: 'download-item', 
     template: "download-item-template"
 });
 
 var DownloadCollectionView = CachingCollectionView.extend({
     displayName: 'Downloads',
     offline: true,
+    icon: "images/glyphicons_200_download.png",
+    collection: DownloadCollection,
     
     init: function () {
         _.bindAll(this, 'newDownload');
@@ -30,7 +33,7 @@ var DownloadCollectionView = CachingCollectionView.extend({
     },
     
     newDownload: function (newModel) {
-        this.collection.add(new DownloadModel(newModel));
+        this.collection.add(new DownloadModel(newModel.attributes));
     },
     
     itemAdded: function (newModel) {

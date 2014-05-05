@@ -79,6 +79,13 @@ var TemplatePopupView = Backbone.View.extend({
         
         app.router.route(this.route,this.id);
         this.listenTo(app.router,'route',this.render);
+        
+        this.currentId = 0;
+        
+        this.init();
+    },
+    
+    init: function () {
     },
     
     render: function (route, params) {
@@ -89,8 +96,10 @@ var TemplatePopupView = Backbone.View.extend({
         if (!this.collection.get(params[0])) {
             return;
         }
+        
+        this.currentId = params[0];
     
-        $(this.el).html(this.template(this.collection.get(params[0]).attributes));
+        $(this.el).html(this.template(this.collection.get(this.currentId).attributes));
         $('body').append(this.el);
         $(this.el).transition({ top: "45px"} /*{ complete: this.shown }*/);
     },
@@ -103,7 +112,7 @@ var TemplatePopupView = Backbone.View.extend({
     },
     
     removeElement: function () {
-        this.$el.remove();
+        this.$el.detach();
     },
     
     close: function () {
