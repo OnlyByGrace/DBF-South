@@ -45,7 +45,6 @@ var SermonPopupView = Backbone.View.extend({
     },
     
     render: function (route, params) {
-        //console.log(route);
         if (route != "sermonPopup") {
             return this.unrender();
         }

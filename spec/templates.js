@@ -47,3 +47,51 @@ describe("Template Model View", function () {
 		});
 	});
 });
+
+describe("Template Popup View", function () {
+    beforeEach(function () {
+        $(document.body).append("<div id='stage'><div id='testTemplate'>Test</div></div>");
+    });
+    
+    afterEach(function () {
+        $('#stage').remove();
+    });
+    
+    describe("initialize", function () {
+        it("should throw an error if no collection specified", function () {
+            var caught = false;
+            try {
+                var thisView = new TemplatePopupView({template: 'test'});
+            } catch (e) {
+                caught = true;
+            }
+            expect(caught).toBe(true);
+        });
+        
+        it("should throw an error if no template specified", function () {
+            var caught = false;
+            try {
+                var thisView = new TemplatePopupView({collection: {}});
+            } catch (e) {
+                caught = true;
+            }
+            expect(caught).toBe(true);
+        });
+        
+        it("should throw an error if no route specified", function () {
+            var caught = false;
+            try {
+                var thisView = new TemplatePopupView({collection: {}, template: {}});
+            } catch (e) {
+                caught = true;
+            }
+            expect(caught).toBe(true);
+        });
+        
+        it("should setup a route with the router", function () {
+            spyOn(app.router, 'route');
+            var thisView = new TemplatePopupView({id: "sermonPopup", collection: {}, template: "#testTemplate", route: "sermons/:id"});
+            expect(app.router.route).toHaveBeenCalledWith("sermons/:id", "sermonPopup");
+        });
+    });
+});
