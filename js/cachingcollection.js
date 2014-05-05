@@ -18,6 +18,10 @@ var CachingCollection = Backbone.Collection.extend({
 			if (opts.name) {
 				this.name = opts.name;
 			}
+            
+            if (opts.offline) {
+				this.offline = opts.offline;
+			}
 		}
 		
 		this.init();
@@ -132,7 +136,7 @@ var CachingCollectionView = Backbone.View.extend({
 			}
 		}
 		
-		this.collection = new this.collection([],{name:this.displayName});
+		this.collection = new this.collection([],{name:this.displayName, offline: this.offline});
 		
 		//var tempEl = app.register(this.displayName,this.icon);
 		//console.log(tempEl);
