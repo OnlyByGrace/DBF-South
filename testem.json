@@ -16,6 +16,8 @@
 		"js/news.js",
 		"spec/news.js",
 		"js/sermons.js",
-		"spec/sermons.js"
+		"spec/sermons.js",
+        "js/downloads.js",
+        "spec/downloads.js"
 	]
 }
