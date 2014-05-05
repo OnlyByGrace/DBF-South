@@ -75,6 +75,7 @@ describe("News Section", function () {
 			it("should have default content", function () {
 				expect(thisModel.get('title')).toBeDefined();
 				expect(thisModel.get('content')).toBeDefined();
+                expect(thisModel.get('text')).toBeDefined();
 				expect(thisModel.get('date')).toBeDefined();
 			});
 			

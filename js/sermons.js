@@ -71,7 +71,7 @@ var SermonPopupView = Backbone.View.extend({
     },
     
     onClick: function () {
-        window.history.back();
+        //window.history.back();
     }
 });
 

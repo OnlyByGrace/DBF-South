@@ -2,6 +2,7 @@ var NewsModel = Backbone.Model.extend({
 	defaults: {
 		"title": '',
 		"content": '',
+        "text": '',
 		"date": ''
 	},
 	
@@ -27,6 +28,7 @@ var NewsCollection = CachingCollection.extend({
 			var elData = {
 				title: el.find("title").text(),
 				text: description,
+                content: el.find("description").text(),
 				//date: thisDate.toLocaleDateString(),
 				id: el.find("guid").text()
 			};

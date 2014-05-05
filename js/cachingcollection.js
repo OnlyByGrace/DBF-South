@@ -56,7 +56,7 @@ var CachingCollection = Backbone.Collection.extend({
 		$.ajax({ context: this,
 			type: 'GET',
 			url: this.url,
-			cache: false, timeout: 2000})
+			cache: false})
 			.fail(function () {
                 console.log("failure");
                 if (options.errorCallback) {
@@ -88,7 +88,7 @@ var CachingCollection = Backbone.Collection.extend({
 			this.loadCache();
 		}
 		
-        console.log(app.online);
+        //console.log(app.online);
 		if ((app.online == true) && this.url) {
 			this.loadLive(options);
 		} else {
