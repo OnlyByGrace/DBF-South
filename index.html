@@ -20,13 +20,10 @@
     </script>
     
     <script id="news-popup-template" type="text/x-handlebars-template">
-        <div id="newsWrapper" class="wrapper">
-            <div id="newsScroller" class="scroller">
-                <h5>{{title}}</h5>
-                <p class="news-text">
-                    {{content}}
-                </p>
-            </div>
+        <div id="newsWrapper" class="popupScroller">         
+         <h3>{{title}}</h3>
+            <hr />
+            {{{content}}}
         </div>
     </script>
 
@@ -179,6 +176,5 @@
         //var sermonView = new SermonListView();
     });
 </script>
-
 </body>
 </html>
