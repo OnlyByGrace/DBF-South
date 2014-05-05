@@ -9,7 +9,11 @@ var TemplateModelView = Backbone.View.extend({
 			throw "No template specified";
 		}
 		
-		var templateId = opts.template;
+        var templateId = null;
+		if (opts) {
+            templateId = opts.template;
+        }
+        
 		if (!templateId) {
 			templateId = this.template;
 		}

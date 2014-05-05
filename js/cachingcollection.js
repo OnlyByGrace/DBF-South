@@ -87,6 +87,10 @@ var CachingCollection = Backbone.Collection.extend({
 			//console.log("loading cache");
 			this.loadCache();
 		}
+        
+        if (this.offline == true) {
+            options.successCallback();
+        }
 		
         //console.log(app.online);
 		if ((app.online == true) && this.url) {

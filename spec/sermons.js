@@ -30,7 +30,7 @@ describe("SermonModelView", function () {
 
 describe("SermonCollectionView", function () {
     beforeEach(function () {
-        $('body').append("<div id='stage'></div>");
+        $('body').append("<div id='stage'><div id='sermon-template'></div></div>");
         var el = $('#stage');
         el.append("<div id='scrollIndicator'><div></div></div><div id='horizontalWrapper'><div></div></div>");
         el.append(sermonPopupTemplate);
@@ -49,6 +49,15 @@ describe("SermonCollectionView", function () {
         it("should have a popup", function () {
             var thisView = new SermonCollectionView();
             expect(thisView.popup).toEqual(jasmine.any(SermonPopupView));
+        });
+    });
+    
+    describe("downloadAdded", function () {
+        it("should mark the ID passed as downloaded", function () {
+            var thisView = new SermonCollectionView();
+            thisView.collection.add(new SermonModel({url: 'testing'}));
+            thisView.downloadAdded('testing');
+            expect(thisView.collection.get('testing').get('downloaded')).toBe(true);
         });
     });
 });

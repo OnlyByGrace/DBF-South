@@ -139,7 +139,30 @@ describe("Caching Collection",function () {
 			}
 			runs(function () {
 				spyOn(thisCollection,'loadLive');
-				delete thisCollection.url;
+				thisCollection.url = '';
+				app.online = true;
+				thisCollection.fetch(options);
+			});
+			
+			waitsFor(function () {
+				return (called);
+			},"error callback should be fired", 500);
+			
+			runs(function () {
+				expect(called).toBe(true);
+			});			
+		});
+        
+        it("should call success callback if it is an offline collection", function () {
+			var called = false;
+			var options = {
+				successCallback: function () {
+					called = true;
+				}
+			}
+			runs(function () {
+                thisCollection.offline = true;
+				spyOn(thisCollection,'loadLive');
 				app.online = true;
 				thisCollection.fetch(options);
 			});
