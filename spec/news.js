@@ -50,16 +50,16 @@ var newsTemplate = '<script id="entry-template" type="text/x-handlebars-template
         </p> \
     </script>';
 
-// '<script id="news-template" type="text/x-handlebars-template"> \
-        // <div id="newsWrapper" class="wrapper"> \
-            // <div id="newsScroller" class="scroller"> \
-                // <h5>{{title}}</h5> \
-                // <p class="news-text"> \
-                    // {{content}} \
-                // </p> \
-            // </div> \
-        // </div> \
-    // </script>';
+var newsPopupTemplate = '<script id="news-popup-template" type="text/x-handlebars-template"> \
+        <div id="newsWrapper" class="wrapper"> \
+            <div id="newsScroller" class="scroller"> \
+                <h5>{{title}}</h5> \
+                <p class="news-text"> \
+                    {{content}} \
+                </p> \
+            </div> \
+        </div> \
+    </script>';
 
 
 describe("News Section", function () {
@@ -246,6 +246,7 @@ describe("News Section", function () {
 			navigator.connection.type = Connection.NONE;
 			el.append("<div id='scrollIndicator'><div></div></div><div id='horizontalWrapper'><div id='horizontalScroller'></div></div>");
 			el.append(newsTemplate);
+            el.append(newsPopupTemplate);
 			
 			app.initialize();
 			//app.onDeviceReady();

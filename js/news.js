@@ -12,7 +12,17 @@ var NewsModel = Backbone.Model.extend({
 
 var NewsModelView = TemplateModelView.extend({
 	className: "news-item",
-	template: "entry-template"
+	template: "entry-template",
+    
+    onTap: function () {
+        app.router.navigate("reader/"+this.model.cid, {trigger: true});
+	}
+});
+
+var NewsPopupView = TemplatePopupView.extend({
+    template: "#news-popup-template",
+    route: "reader/:id",
+    id: "newsPopup"
 });
 
 var NewsCollection = CachingCollection.extend({
@@ -42,6 +52,10 @@ var NewsCollectionView = CachingCollectionView.extend({
 	displayName: 'news',
 	icon: "images/glyphicons_045_calendar.png",
 	collection: NewsCollection,
+    
+    init: function () {
+        this.popup = new NewsPopupView({collection: this.collection});
+    },
 	
 	itemAdded: function (newModel) {
 		var newView = new NewsModelView({model: newModel});

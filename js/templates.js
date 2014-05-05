@@ -73,12 +73,12 @@ var TemplatePopupView = Backbone.View.extend({
         var source = $(this.template).html();
         this.template = Handlebars.compile(source);
         
-        app.router.route("sermons/:id","sermonPopup");
+        app.router.route(this.route,this.id);
         this.listenTo(app.router,'route',this.render);
     },
     
     render: function (route, params) {
-        if (route != "sermonPopup") {
+        if (route != this.id) {
             return this.unrender();
         }
 
