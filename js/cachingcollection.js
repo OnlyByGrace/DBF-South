@@ -214,7 +214,7 @@ var CachingCollectionView = Backbone.View.extend({
 			var that = this;
             this.adjusting = true;
 			//setTimeout(function () { that.el.scrollTop = 100},10);
-			this.$el.animate({scrollTop: 50},200, function () {that.adjusting = false});
+			this.$el.animate({scrollTop: 50},200, 'linear', function () {that.adjusting = false});
 			setTimeout(that.onScroll,150);
 		}
 	}

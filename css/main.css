@@ -433,7 +433,6 @@ body
     top: 100%;
     left: 0px;
     width: 100%;
-    top: 48px;
     bottom: 10px;
     background-color:#ccc;
     z-index: 3;
@@ -441,6 +440,12 @@ body
     -ms-touch-action: pan-x;
     overflow: hidden;
     text-align: center;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .templatePopup h3 {

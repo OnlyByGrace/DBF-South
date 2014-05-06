@@ -101,7 +101,8 @@ var TemplatePopupView = Backbone.View.extend({
     
         $(this.el).html(this.template(this.collection.get(this.currentId).attributes));
         $('body').append(this.el);
-        $(this.el).transition({ top: "45px"} /*{ complete: this.shown }*/);
+        var that = this;
+        $(that.el).transition({ top: "45px", duration: 200} /*{ complete: this.shown }*/);
     },
     
     unrender: function (route, params) {

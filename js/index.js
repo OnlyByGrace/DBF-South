@@ -141,7 +141,7 @@ var ScreenCollectionView = Backbone.View.extend({
 	goTo: function (screen) {
         var thisModel = this.collection.at(screen);
         if (thisModel) {
-            this.$el.animate({scrollLeft: $("#"+thisModel.get("el")).position().left},200);
+            this.$el.animate({scrollLeft: $("#"+thisModel.get("el")).position().left},100, 'swing');
             this.currentScreen = screen;
         }
 	},
