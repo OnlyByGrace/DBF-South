@@ -346,6 +346,10 @@ body
     /* background-color: darkgrey; */
 }
 
+.playDownloadLink:active, .deleteDownloadLink:active, .cancelDownloadLink:active {
+    background-color: grey;
+}
+
 .entry-text
 {
     padding-left:5px;
@@ -371,6 +375,10 @@ body
     margin-top: 15px;
     min-height:100px;
 	/* box-shadow: 0px 2px 5px grey; */
+}
+
+.sermon-item:active, .download-item:active, .news-item:active {
+    /* background-color: grey; */
 }
 
 .sermon-text, .download-text
@@ -434,7 +442,7 @@ body
     left: 0px;
     width: 100%;
     bottom: 0px;
-    background-color:#ccc;
+    background-color: white;
     z-index: 3;
     backface-visibility: hidden;
     -ms-touch-action: pan-x;
@@ -473,6 +481,11 @@ body
     padding-top: 15px;
     height: 50px;
     float: left;
+    border-top: 1px solid black;
+}
+
+.sermonDownloadButton {
+    border-left: 1px solid black;
 }
 
 .sermonPlayButton:active, .sermonDownloadButton:active {
