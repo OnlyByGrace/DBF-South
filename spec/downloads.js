@@ -79,6 +79,7 @@ describe("Downloads Section", function () {
         
         describe("itemAdded", function(){
             it("should add an element to this el", function () {
+                spyOn(util,'getFile');
                 $(document.body).append("<div id='stage'><div id='download-item-template'></div></div>");
                 var thisView = new DownloadCollectionView({collection: DownloadCollection});
                 var thisModel = new DownloadModel({'url':'test'});
@@ -117,10 +118,27 @@ describe("DownloadManager", function () {
     describe("DownloadManagerModel", function () {
     });
     
-    describe("CurrenDownloadCollection", function () {
+    describe("DownloadManagerCollection", function () {
+        var thisCollection;
+        beforeEach(function () {
+            thisCollection = new DownloadManagerCollection();
+        });
+    
+        describe("itemAdded", function () {
+            it("should start downloading the queue", function () {
+                spyOn(thisCollection,'start');
+                thisCollection.add(new DownloadManagerModel());
+                expect(thisCollection.start).toHaveBeenCalled();
+            });
+        });
+        
+        describe("start", function () {
+            
+        });
+        
+        describe("pause", function () {
+        });
     });
-    //it should hold a list of queued download items
-    //it should start the queue when a new item is added
     //it should call a progress function when the download progresses
     //it should cancel the download and delete the file if cancelled
     //it should remove the item from the queue when finished

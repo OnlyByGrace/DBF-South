@@ -16,7 +16,7 @@ var util = {
     deleteFile: function (path) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
             fileSystem.root.getDirectory("sermons", {}, function (targetDirectory) {
-                targetDirectory.getFile(url, {}, function (targetFile) {
+                targetDirectory.getFile(path, {}, function (targetFile) {
                     targetFile.remove(function () {
                         return true;
                     }, function () {
