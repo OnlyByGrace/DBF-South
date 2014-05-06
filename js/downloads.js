@@ -9,6 +9,9 @@ var DownloadModel = Backbone.Model.extend({
         downloaded: '',
         progress: '',
         state: ''
+    },
+    
+    sync: function () {
     }
 });
 
@@ -16,9 +19,40 @@ var DownloadCollection = CachingCollection.extend({
     model: DownloadModel
 });
 
+
+var DownloadManagerModel = Backbone.Model.extend({
+    defaults: {
+        downloadPromise: null,
+        data: null
+    }
+});
+
 var DownloadModelView = TemplateModelView.extend({
     className: 'download-item', 
-    template: "download-item-template"
+    template: "download-item-template",
+    
+    events: {
+		'click .deleteDownloadLink' : 'deleteDownload',
+        'click .cancelDownloadLink' : 'deleteDownload'
+	},
+    
+    init: function () {
+        _.bindAll(this,'deleteDownload', 'removeFile');
+        if (this.model) {
+			this.listenTo(this.model,'destroy',this.removeFile);
+		}
+    },
+    
+    deleteDownload: function () {
+        this.model.destroy();
+    },
+    
+    removeFile: function (model) {
+        var url = this.model.get("url");
+        url = url.substring(url.lastIndexOf('/') + 1);
+        util.deleteFile(url);
+        app.trigger('downloadRemoved',model.id);
+    }
 });
 
 var DownloadCollectionView = CachingCollectionView.extend({

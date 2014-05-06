@@ -7,6 +7,7 @@
 		"lib/handlebars-v1.3.0.js",
 		"lib/jquery.transit.min.js",
 		"lib/hammer.min.js",
+        "js/util.js",
 		"js/index.js",
 		"spec/index.js",
 		"js/templates.js",

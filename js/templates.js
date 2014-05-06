@@ -3,7 +3,7 @@ var TemplateModelView = Backbone.View.extend({
 		'tap': 'onTap'
 	},
 	initialize: function (opts) {
-		_.bindAll(this,'render','unrender','onTap');
+		_.bindAll(this,'init', 'render','unrender','onTap');
 		
 		if (((!opts) || (!opts.template)) && (!this.template)) {
 			throw "No template specified";
@@ -24,7 +24,13 @@ var TemplateModelView = Backbone.View.extend({
 		if (this.model) {
 			this.listenTo(this.model,'destroy',this.unrender);
 		}
+        
+        this.init();
 	},
+    
+    /* should be overwritten */
+    init: function () {
+    },
 	
 	render: function () {
 		this.$el.html(this.template(this.model.attributes));
