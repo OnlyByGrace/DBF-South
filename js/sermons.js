@@ -61,7 +61,10 @@ var SermonCollection = CachingCollection.extend({
                 length: el.find("itunes\\:duration").text(),
                 date: el.find("pubdate").text()
             };
-            self.set(new SermonModel(elData),{remove : false});
+            var newModel = new SermonModel(elData);
+            console.log(JSON.stringify(newModel));
+            self.set(newModel,{remove : false});
+            console.log(JSON.stringify(self));
         });
         app.trigger("getDownloads");
     }

@@ -11,6 +11,7 @@ var CachingCollection = Backbone.Collection.extend({
 	initialize: function (models,opts) {
 		_.bindAll(this,'loadCache','loadLive','sync','save');
 		this.listenTo(this, 'add', this.save);
+        this.listenTo(this, 'change', this.save);
 		this.listenTo(this, 'remove', this.save);
 		this.listenTo(this, 'reset', this.save);
 		
@@ -45,6 +46,7 @@ var CachingCollection = Backbone.Collection.extend({
                     break;
                 case "1.0":
                     this.lastUpdate = new Date(items.date);
+                    //console.log(JSON.stringify(items.data));
                     this.set(items.data);
                     break;
                 default:
@@ -109,6 +111,7 @@ var CachingCollection = Backbone.Collection.extend({
 	
 	save: function () {
         var newCache = new CacheModel({date: new Date(), data: this});
+        //console.log(this.name + " " + JSON.stringify(newCache));
 		window.localStorage.setItem(this.name+"Cache",JSON.stringify(newCache));
 	}
 });
